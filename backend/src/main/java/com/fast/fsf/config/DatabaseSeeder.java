@@ -1,19 +1,13 @@
 package com.fast.fsf.config;
 
 import com.fast.fsf.admin.domain.Admin;
-import com.fast.fsf.pastpapers.domain.PastPaper;
-import com.fast.fsf.timetable.domain.TimetableEntry;
 import com.fast.fsf.admin.persistence.AdminRepository;
-import com.fast.fsf.pastpapers.persistence.PastPaperRepository;
-import com.fast.fsf.timetable.persistence.TimetableEntryRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Configuration class for seeding the database with initial data.

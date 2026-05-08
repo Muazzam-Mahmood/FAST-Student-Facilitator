@@ -56,7 +56,6 @@ public class CampusMapController {
     private final DatabaseDirectionsWorkflow directionsWorkflow;
     private final FeatureUsageAnalyticsService analyticsService;
 
-    @Autowired
     public CampusMapController(CampusLocationRepository locationRepo,
                                CampusMapRouteRepository routeRepo,
                                LocationSuggestionRepository suggestionRepo,

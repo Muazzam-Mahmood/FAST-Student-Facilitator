@@ -36,6 +36,7 @@ public abstract class AbstractDirectionsWorkflow {
      * @param to   the destination location
      * @return directions response containing steps and destination info
      */
+    public DirectionsResponse execute(String from, String to) {
         validateInputs(from, to);
 
         String originalTo = to;

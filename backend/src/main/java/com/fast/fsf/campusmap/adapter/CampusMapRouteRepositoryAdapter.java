@@ -2,7 +2,6 @@ package com.fast.fsf.campusmap.adapter;
 
 import com.fast.fsf.campusmap.domain.CampusMapRoute;
 import com.fast.fsf.campusmap.persistence.CampusMapRouteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,7 +14,6 @@ public class CampusMapRouteRepositoryAdapter implements RouteStepCatalog {
 
     private final CampusMapRouteRepository routeRepository;
 
-    @Autowired
     public CampusMapRouteRepositoryAdapter(CampusMapRouteRepository routeRepository) {
         this.routeRepository = routeRepository;
     }

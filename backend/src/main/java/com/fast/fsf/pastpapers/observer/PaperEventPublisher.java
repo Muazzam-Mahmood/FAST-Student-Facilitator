@@ -2,7 +2,6 @@ package com.fast.fsf.pastpapers.observer;
 
 import com.fast.fsf.pastpapers.domain.PaperComment;
 import com.fast.fsf.pastpapers.domain.PastPaper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ public class PaperEventPublisher {
 
     private final List<PaperEventListener> listeners = new ArrayList<>();
 
-    @Autowired
     public PaperEventPublisher(List<PaperEventListener> listeners) {
         this.listeners.addAll(listeners);
     }

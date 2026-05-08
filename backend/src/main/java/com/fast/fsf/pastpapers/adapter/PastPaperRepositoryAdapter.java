@@ -2,7 +2,6 @@ package com.fast.fsf.pastpapers.adapter;
 
 import com.fast.fsf.pastpapers.domain.PastPaper;
 import com.fast.fsf.pastpapers.persistence.PastPaperRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,7 +20,6 @@ public class PastPaperRepositoryAdapter implements ApprovedPaperCatalog {
 
     private final PastPaperRepository paperRepository;
 
-    @Autowired
     public PastPaperRepositoryAdapter(PastPaperRepository paperRepository) {
         this.paperRepository = paperRepository;
     }

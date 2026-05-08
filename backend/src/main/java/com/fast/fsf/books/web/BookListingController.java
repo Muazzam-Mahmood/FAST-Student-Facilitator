@@ -5,7 +5,6 @@ import com.fast.fsf.books.factory.BookListingFactory;
 import com.fast.fsf.books.event.*;
 import com.fast.fsf.books.persistence.BookListingRepository;
 import com.fast.fsf.analytics.service.FeatureUsageAnalyticsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

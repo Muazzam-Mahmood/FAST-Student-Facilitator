@@ -11,7 +11,6 @@ import com.fast.fsf.carpool.template.ResolveRideWorkflow;
 import com.fast.fsf.carpool.domain.Ride;
 import com.fast.fsf.carpool.persistence.RideRepository;
 import com.fast.fsf.analytics.service.FeatureUsageAnalyticsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

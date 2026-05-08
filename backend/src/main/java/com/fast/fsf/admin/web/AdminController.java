@@ -3,8 +3,6 @@ package com.fast.fsf.admin.web;
 import com.fast.fsf.carpool.persistence.RideRepository;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * AdminController
  * 

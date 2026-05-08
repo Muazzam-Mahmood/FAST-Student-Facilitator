@@ -4,7 +4,6 @@ import com.fast.fsf.campusmap.domain.CampusLocation;
 import com.fast.fsf.campusmap.domain.CampusMapRoute;
 import com.fast.fsf.campusmap.persistence.CampusLocationRepository;
 import com.fast.fsf.campusmap.persistence.CampusMapRouteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +21,6 @@ public class CampusMapSeeder implements CommandLineRunner {
     private final CampusLocationRepository locationRepo;
     private final CampusMapRouteRepository routeRepo;
 
-    @Autowired
     public CampusMapSeeder(CampusLocationRepository locationRepo,
             CampusMapRouteRepository routeRepo) {
         this.locationRepo = locationRepo;

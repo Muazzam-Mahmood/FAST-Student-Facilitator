@@ -18,7 +18,6 @@ import com.fast.fsf.pastpapers.template.DeletePaperWorkflow;
 import com.fast.fsf.pastpapers.template.FlagPaperWorkflow;
 import com.fast.fsf.pastpapers.template.ResolveFlagWorkflow;
 import com.fast.fsf.analytics.service.FeatureUsageAnalyticsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,7 +62,6 @@ public class PastPaperController {
         GOOGLE_DRIVE_LINKS.put("Probability and Statistics", "https://drive.google.com/drive/folders/1knOsNuexBD1a86aFrgHUp4gym6U6ja1V");
     }
 
-    @Autowired
     public PastPaperController(PastPaperRepository pastPaperRepository,
                                PaperRatingRepository paperRatingRepository,
                                PaperCommentRepository paperCommentRepository,

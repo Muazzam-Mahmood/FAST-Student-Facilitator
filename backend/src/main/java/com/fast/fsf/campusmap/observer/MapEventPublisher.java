@@ -3,7 +3,6 @@ package com.fast.fsf.campusmap.observer;
 import com.fast.fsf.campusmap.domain.CampusLocation;
 import com.fast.fsf.campusmap.domain.CampusMapRoute;
 import com.fast.fsf.campusmap.domain.LocationSuggestion;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ public class MapEventPublisher {
 
     private final List<MapEventListener> listeners = new ArrayList<>();
 
-    @Autowired
     public MapEventPublisher(List<MapEventListener> listeners) {
         this.listeners.addAll(listeners);
     }

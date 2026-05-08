@@ -5,7 +5,6 @@ import com.fast.fsf.timetable.event.TimetableUploadedEvent;
 import com.fast.fsf.timetable.persistence.TimetableEntryRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 import java.util.List;
@@ -40,12 +39,17 @@ public abstract class AbstractTimetableProcessor {
                 return ResponseEntity.badRequest().body("No valid classes found in the file.");
             }
 
-            timetableRepository.deleteAll(timetableRepository.findByApprovedTrue());
-            timetableRepository.saveAll(entries);
-            
+            // Fast batch delete then batch insert (avoids N individual DELETE statements)
+            timetableRepository.deleteAllInBatch(timetableRepository.findByApprovedTrue());
+            timetableRepository.saveAllAndFlush(entries);
+
             eventPublisher.publishEvent(new TimetableUploadedEvent(this, ownerName, entries.size()));
 
-            return ResponseEntity.ok(entries);
+            // Return summary only – not the full list (avoids serialising thousands of rows)
+            return ResponseEntity.ok(java.util.Map.of(
+                "message", "Timetable uploaded successfully.",
+                "count", entries.size()
+            ));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body("Error parsing file: " + e.getMessage());
