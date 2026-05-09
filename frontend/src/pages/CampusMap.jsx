@@ -26,7 +26,7 @@ const CATEGORY_ICONS = {
 // ─────────────────────────────────────────────────────────────────────────────
 // Sub-component: Destination Info Card
 // ─────────────────────────────────────────────────────────────────────────────
-function DestInfoCard({ location }) {
+function DestInfoCard({ location, onReport }) {
   if (!location) return null;
 
   const faculty = location.facultyOffices
@@ -54,6 +54,14 @@ function DestInfoCard({ location }) {
           ? <div className="chips-row">{rooms.map((r, i) => <span key={i} className="chip">{r}</span>)}</div>
           : <span className="dest-info-empty">No classrooms in this location</span>}
       </div>
+
+      <button
+        className="report-location-btn"
+        onClick={() => onReport(location)}
+        style={{ marginTop: '8px', alignSelf: 'flex-start' }}
+      >
+        🚩 Report Info
+      </button>
     </div>
   );
 }
@@ -92,7 +100,7 @@ function EventPopup({ events, onDismiss }) {
 // ─────────────────────────────────────────────────────────────────────────────
 // Sub-component: Location Detail Panel (bottom-sheet modal)
 // ─────────────────────────────────────────────────────────────────────────────
-function LocationDetailPanel({ location, onClose, onGoHere }) {
+function LocationDetailPanel({ location, onClose, onGoHere, onReport }) {
   if (!location) return null;
 
   const faculty = location.facultyOffices
@@ -136,13 +144,23 @@ function LocationDetailPanel({ location, onClose, onGoHere }) {
             : <span className="dest-info-empty">No classrooms in this location</span>}
         </div>
 
-        <button
-          id="go-here-btn"
-          className="go-here-btn"
-          onClick={() => onGoHere(location)}
-        >
-          🧭 Get Directions Here
-        </button>
+        <div className="location-detail-actions">
+          <button
+            id="go-here-btn"
+            className="go-here-btn"
+            onClick={() => onGoHere(location)}
+          >
+            🧭 Get Directions Here
+          </button>
+
+          <button
+            className="report-location-btn"
+            onClick={() => onReport(location)}
+            title="Report incorrect information"
+          >
+            🚩 Report / Flag
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -152,7 +170,7 @@ function LocationDetailPanel({ location, onClose, onGoHere }) {
 // MAIN COMPONENT
 // ─────────────────────────────────────────────────────────────────────────────
 const CampusMap = ({ user }) => {
-  const { showAlert, showConfirm } = useFsfDialog();
+  const { showAlert, showConfirm, showPrompt } = useFsfDialog();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const mapSearchDeepLink = searchParams.get('q');
@@ -633,6 +651,46 @@ const CampusMap = ({ user }) => {
     }
   };
 
+  // ── Report / Flag Location ──────────────────────────────────────────────────
+  const handleReportLocation = async (location) => {
+    if (!user) {
+      void showAlert({ title: 'Authentication Required', message: 'Please log in to report locations.' });
+      return;
+    }
+
+    const reason = await showPrompt({
+      title: user.role === 'ADMIN' ? 'Flag Location' : 'Report Location',
+      message: user.role === 'ADMIN' 
+        ? 'Enter reason for flagging this location:' 
+        : 'Why are you reporting this location? (e.g. Incorrect name, moved to another block)',
+      placeholder: 'Reason (required)',
+      required: true
+    });
+
+    if (!reason || !reason.trim()) return;
+
+    const endpoint = user.role === 'ADMIN' ? 'flag' : 'flag'; // Both use the same backend flag endpoint for now as it takes a reason
+    try {
+      const res = await fetch(`${API}/locations/${location.id}/flag?reason=${encodeURIComponent(reason.trim())}`, {
+        method: 'PUT'
+      });
+
+      if (res.ok) {
+        void showAlert({ 
+          title: 'Report Submitted', 
+          message: 'Thank you. The campus administrators have been notified.' 
+        });
+        // Update local state if needed (though locations are usually fetched again)
+        setAllLocations(prev => prev.map(l => l.id === location.id ? { ...l, flagged: true } : l));
+      } else {
+        const msg = await res.text();
+        void showAlert({ title: 'Report Failed', message: msg || 'Could not submit report.' });
+      }
+    } catch (err) {
+      void showAlert({ title: 'Network Error', message: 'Could not connect to the server.' });
+    }
+  };
+
   // ─────────────────────────────────────────────────────────────────────────
   // RENDER
   // ─────────────────────────────────────────────────────────────────────────
@@ -847,7 +905,7 @@ const CampusMap = ({ user }) => {
                   {currentStepData?.hasImage ? (
                     <div className="step-image-area">
                       <img
-                        src={`http://localhost:8080${currentStepData.imageUrl}`}
+                        src={`${currentStepData.imageUrl}`}
                         alt={`Step ${currentStep + 1}`}
                         onError={e => {
                           e.target.style.display = 'none';
@@ -910,7 +968,10 @@ const CampusMap = ({ user }) => {
 
               {/* Destination Info Card (always shown when there's a result) */}
               {directionsResult.destinationInfo && (
-                <DestInfoCard location={directionsResult.destinationInfo} />
+                <DestInfoCard 
+                  location={directionsResult.destinationInfo} 
+                  onReport={handleReportLocation}
+                />
               )}
             </div>
           )}
@@ -995,6 +1056,7 @@ const CampusMap = ({ user }) => {
           location={selectedLocation}
           onClose={() => setSelectedLocation(null)}
           onGoHere={handleGoHere}
+          onReport={handleReportLocation}
         />
       )}
 

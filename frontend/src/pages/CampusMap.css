@@ -858,6 +858,14 @@
   line-height: 1.6;
 }
 
+.location-detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
 .go-here-btn {
   display: inline-flex;
   align-items: center;
@@ -873,12 +881,34 @@
   color: #fff;
   box-shadow: 0 4px 16px rgba(255,59,83,0.3);
   transition: transform 0.18s, filter 0.18s;
-  align-self: flex-start;
 }
 
 .go-here-btn:hover { transform: scale(1.05); filter: brightness(1.07); }
 
 [data-theme="light"] .go-here-btn { background: var(--accent-gradient); }
+
+.report-location-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-family: var(--font-main);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.report-location-btn:hover {
+  background: rgba(255, 59, 83, 0.1);
+  border-color: rgba(255, 59, 83, 0.3);
+  color: #ff5370;
+  transform: translateY(-1px);
+}
 
 /* ══════════════════════════════════════════════════════════════════════════
    SUGGEST FORM
