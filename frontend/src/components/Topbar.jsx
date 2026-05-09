@@ -447,23 +447,15 @@ const Topbar = ({ theme, toggleTheme, user }) => {
 
                 <div className="user-pill" title={user?.email || ''}>
                     <div className="user-avatar">
+                        <span className="user-avatar-initials">{initials}</span>
                         {user?.picture ? (
                             <img
                                 src={user.picture}
                                 alt={user.name || 'User'}
                                 className="user-avatar-img"
-                                onError={(e) => {
-                                    e.currentTarget.style.display = 'none';
-                                    e.currentTarget.nextSibling.style.display = 'flex';
-                                }}
+                                onError={(e) => { e.currentTarget.style.display = 'none'; }}
                             />
                         ) : null}
-                        <span
-                            className="user-avatar-initials"
-                            style={{ display: user?.picture ? 'none' : 'flex' }}
-                        >
-                            {initials}
-                        </span>
                     </div>
                     <div className="user-info">
                         <span className="user-name">{user?.name || 'Guest'}</span>

@@ -1,7 +1,6 @@
 package com.fast.fsf.campusmap.web;
 
 import com.fast.fsf.campusmap.adapter.ApprovedLocationCatalog;
-import com.fast.fsf.campusmap.adapter.RouteStepCatalog;
 import com.fast.fsf.campusmap.criterion.*;
 import com.fast.fsf.campusmap.domain.CampusLocation;
 import com.fast.fsf.campusmap.domain.CampusMapRoute;
@@ -15,7 +14,6 @@ import com.fast.fsf.campusmap.service.LocationSearchService;
 import com.fast.fsf.campusmap.template.*;
 import com.fast.fsf.events.persistence.CampusEventRepository;
 import com.fast.fsf.analytics.service.FeatureUsageAnalyticsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,7 +47,6 @@ public class CampusMapController {
     private final MapEventPublisher eventPublisher;
     private final LocationSearchService searchService;
     private final ApprovedLocationCatalog locationCatalog;
-    private final RouteStepCatalog routeCatalog;
     private final ApproveLocationWorkflow approveWorkflow;
     private final FlagLocationWorkflow flagWorkflow;
     private final ResolveFlagLocationWorkflow resolveFlagWorkflow;
@@ -63,7 +60,6 @@ public class CampusMapController {
                                MapEventPublisher eventPublisher,
                                LocationSearchService searchService,
                                ApprovedLocationCatalog locationCatalog,
-                               RouteStepCatalog routeCatalog,
                                ApproveLocationWorkflow approveWorkflow,
                                FlagLocationWorkflow flagWorkflow,
                                ResolveFlagLocationWorkflow resolveFlagWorkflow,
@@ -76,7 +72,6 @@ public class CampusMapController {
         this.eventPublisher = eventPublisher;
         this.searchService = searchService;
         this.locationCatalog = locationCatalog;
-        this.routeCatalog = routeCatalog;
         this.approveWorkflow = approveWorkflow;
         this.flagWorkflow = flagWorkflow;
         this.resolveFlagWorkflow = resolveFlagWorkflow;
