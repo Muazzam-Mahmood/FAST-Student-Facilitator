@@ -24,7 +24,12 @@ export async function fsfFetch(url, options = {}) {
     }
 
     // Convert relative URL to absolute using API_BASE_URL if needed
-    const finalUrl = url.toString().startsWith('http') ? url : `${API_BASE_URL}${url}`;
+    let finalUrl = url.toString();
+    if (!finalUrl.startsWith('http')) {
+        const base = API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+        const path = finalUrl.startsWith('/') ? finalUrl : `/${finalUrl}`;
+        finalUrl = `${base}${path}`;
+    }
 
     const response = await fetch(finalUrl, {
         ...options,
