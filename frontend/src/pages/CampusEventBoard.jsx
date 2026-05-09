@@ -15,15 +15,23 @@ const CampusEventBoard = ({ user }) => {
     const [showModal, setShowModal] = useState(false);
     const [editingId, setEditingId] = useState(null);
 
-    const blankForm = () => ({
-        title: '',
-        description: '',
-        eventDate: '',
-        venue: '',
-        organizer: '',
-        category: 'SOCIAL',
-        semesterPlan: false,
-    });
+    const blankForm = () => {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const y = tomorrow.getFullYear();
+        const m = String(tomorrow.getMonth() + 1).padStart(2, '0');
+        const d = String(tomorrow.getDate()).padStart(2, '0');
+        
+        return {
+            title: '',
+            description: '',
+            eventDate: `${y}-${m}-${d}`,
+            venue: '',
+            organizer: '',
+            category: 'SOCIAL',
+            semesterPlan: false,
+        };
+    };
     const [formData, setFormData] = useState(blankForm());
 
     const [searchQuery, setSearchQuery] = useState('');
@@ -253,6 +261,31 @@ const CampusEventBoard = ({ user }) => {
         }
     };
 
+    const handleDeleteSemesterPlan = async () => {
+        const ok = await showConfirm({
+            title: 'Clear Semester Plan',
+            message: 'This will delete all calendar-imported items (Exams, Quizzes, Holidays). Proceed?',
+            confirmText: 'Clear All',
+            cancelText: 'Cancel',
+            danger: true,
+        });
+        if (!ok) return;
+
+        try {
+            const res = await fetch('http://localhost:8080/api/events/semester-plan', { method: 'DELETE' });
+            if (res.ok) {
+                await showAlert({ title: 'Plan Cleared', message: 'Imported semester plan items have been removed.' });
+                loadSemesterPlan();
+                loadEvents();
+            } else {
+                await showAlert({ title: 'Error', message: 'Could not clear plan.' });
+            }
+        } catch (err) {
+            console.error(err);
+            await showAlert({ title: 'Network Error', message: 'Error connecting to server.' });
+        }
+    };
+
     const filteredEvents = (viewMode === 'BOARD' ? events : semesterPlan).filter(event => {
         const query = searchQuery.toLowerCase().trim();
         if (!query) return true;
@@ -281,7 +314,12 @@ const CampusEventBoard = ({ user }) => {
         return null;
     };
 
-    const canEdit = (event) => isAdmin;
+    const canEdit = (event) => {
+        if (!isAdmin) return false;
+        const org = (event.organizer || '').trim();
+        // Only allow editing if it's NOT an imported calendar item
+        return org !== 'Academic Office' && org !== 'Administration';
+    };
 
     return (
         <div className="events-page">
@@ -306,6 +344,9 @@ const CampusEventBoard = ({ user }) => {
 
                 {isAdmin && (
                     <div className="admin-actions">
+                        {viewMode === 'PLAN' && semesterPlan.length > 0 && (
+                            <button className="clear-plan-btn" onClick={handleDeleteSemesterPlan}>🗑️ Clear Plan</button>
+                        )}
                         <label className="upload-label">
                             📁 Upload Plan (XLS)
                             <input type="file" onChange={handleUploadPlan} hidden accept=".xls,.xlsx" />

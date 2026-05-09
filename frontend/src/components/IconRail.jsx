@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useFsfDialog } from './FsfDialogProvider';
 import {
     LayoutDashboard,
     Car,
@@ -39,12 +40,21 @@ const adminItems = [
     { to: '/admin', label: 'Moderation', Icon: Shield },
     { to: '/stats', label: 'Analytics',  Icon: BarChart3 },
 ];
-
 const IconRail = ({ user, onLogout }) => {
     const navigate = useNavigate();
+    const { showConfirm } = useFsfDialog();
     const isAdmin = user?.role === 'ADMIN';
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        const ok = await showConfirm({
+            title: 'Logout',
+            message: 'Are you sure you want to log out of FSF?',
+            confirmText: 'Logout',
+            cancelText: 'Stay',
+            danger: true,
+        });
+        if (!ok) return;
+        
         if (onLogout) onLogout();
         navigate('/login');
     };

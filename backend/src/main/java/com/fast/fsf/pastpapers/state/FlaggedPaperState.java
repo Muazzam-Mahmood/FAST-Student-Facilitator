@@ -20,7 +20,8 @@ public class FlaggedPaperState implements PaperModerationState {
 
     @Override
     public void flag(PastPaper paper, String reason) {
-        throw new IllegalStateException("Paper is already flagged");
+        // Allow updating the reason if already flagged
+        paper.setModerationReason(reason);
     }
 
     @Override

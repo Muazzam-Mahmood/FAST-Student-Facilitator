@@ -302,21 +302,24 @@ public class PastPaperController {
 
     @PostMapping("/{id}/report")
     public ResponseEntity<?> reportPaper(@PathVariable Long id, @RequestBody PaperReport reportRequest) {
-        return paperCatalog.findApprovedById(id).map(paper -> {
-            try {
-                // Factory Pattern for Report creation
-                PaperReport newReport = PastPaperFactory.createReport(id, reportRequest.getReporterEmail(), reportRequest.getReason());
-                PaperReport saved = paperReportRepository.save(newReport);
-
-                paper.setFlagged(true);
-                pastPaperRepository.save(paper);
-                eventPublisher.publishPaperReported(paper, newReport.getReporterEmail(), newReport.getReason());
-
-                return ResponseEntity.ok(saved);
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().body(e.getMessage());
+        try {
+            // Enforce character limit for moderation display
+            String displayReason = reportRequest.getReason() != null ? reportRequest.getReason() : "No reason provided";
+            if (displayReason.length() > 150) {
+                displayReason = displayReason.substring(0, 147) + "...";
             }
-        }).orElse(ResponseEntity.notFound().build());
+
+            // Factory Pattern for Report creation (keep full reason in report entity)
+            PaperReport newReport = PastPaperFactory.createReport(id, reportRequest.getReporterEmail(), reportRequest.getReason());
+            PaperReport savedReport = paperReportRepository.save(newReport);
+
+            // Use workflow to update the paper's state and moderation reason
+            flagWorkflow.execute(id, displayReason);
+
+            return ResponseEntity.ok(savedReport);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/{id}/reports")

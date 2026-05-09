@@ -74,7 +74,23 @@ const PopReminders = ({ user }) => {
 
     const openAddModal = () => {
         setEditingId(null);
-        setFormData(emptyForm);
+        
+        // Default to tomorrow at 9:00 AM for a cleaner experience
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(9, 0, 0, 0);
+        
+        const y = tomorrow.getFullYear();
+        const m = String(tomorrow.getMonth() + 1).padStart(2, '0');
+        const d = String(tomorrow.getDate()).padStart(2, '0');
+        const h = String(tomorrow.getHours()).padStart(2, '0');
+        const min = String(tomorrow.getMinutes()).padStart(2, '0');
+
+        setFormData({ 
+            title: '', 
+            reminderTime: `${y}-${m}-${d}T${h}:${min}`, 
+            category: 'ASSIGNMENT' 
+        });
         setFormError('');
         setShowModal(true);
     };
@@ -89,16 +105,6 @@ const PopReminders = ({ user }) => {
         });
         setFormError('');
         setShowModal(true);
-    };
-
-    const setNow = () => {
-        const d = new Date();
-        const y = d.getFullYear();
-        const m = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        const h = String(d.getHours()).padStart(2, '0');
-        const min = String(d.getMinutes()).padStart(2, '0');
-        setFormData(prev => ({ ...prev, reminderTime: `${y}-${m}-${day}T${h}:${min}` }));
     };
 
     const handleSubmit = async (e) => {
@@ -252,16 +258,7 @@ const PopReminders = ({ user }) => {
                             </label>
 
                             <div className="form-label">
-                                <div className="label-with-action">
-                                    <span>Date &amp; Time <span className="req">*</span></span>
-                                    <button 
-                                        type="button" 
-                                        className="set-now-btn"
-                                        onClick={setNow}
-                                    >
-                                        🕒 Add current date and time
-                                    </button>
-                                </div>
+                                <span>Date &amp; Time <span className="req">*</span></span>
                                 <input
                                     type="datetime-local"
                                     value={formData.reminderTime}

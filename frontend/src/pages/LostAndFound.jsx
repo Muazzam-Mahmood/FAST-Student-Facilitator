@@ -23,12 +23,13 @@ function LostAndFound({ user }) {
 
   const [showModal, setShowModal] = useState(false);
   const [flashListingId, setFlashListingId] = useState(null);
+  const today = new Date().toISOString().split('T')[0];
   const [formData, setFormData] = useState({
     itemName: '',
     category: '',
     description: '',
     location: '',
-    date: ''
+    date: today
   });
 
   const modalCategoryOptions = useMemo(
@@ -127,6 +128,20 @@ function LostAndFound({ user }) {
       await showAlert({ title: 'Category required', message: 'Please select a category.' });
       return;
     }
+
+    // Edge case: handle extreme years (e.g. 111111) that crash the LocalDate parser
+    if (formData.date) {
+        const year = new Date(formData.date).getFullYear();
+        if (year < 2020 || year > 2100) {
+            await showAlert({ 
+                title: 'Invalid Date', 
+                message: 'Please enter a valid year between 2020 and 2100.' 
+            });
+            setFormData(prev => ({ ...prev, date: '' }));
+            return;
+        }
+    }
+
     try {
       const payload = {
         ...formData,

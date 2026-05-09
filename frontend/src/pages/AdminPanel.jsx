@@ -57,11 +57,22 @@ const AdminPanel = () => {
       const dataPapers = await resPapers.json();
       const dataBooks = await resBooks.json();
       const dataLocations = await resLocations.json();
-      const mappedRides = dataRides.map(r => ({ ...r, entityType: 'Ride' }));
-      const mappedPapers = dataPapers.map(p => ({ ...p, entityType: 'Paper' }));
-      const mappedBooks = dataBooks.map(b => ({ ...b, entityType: 'Book' }));
-      const mappedLocations = dataLocations.map(l => ({ ...l, entityType: 'Location' }));
-      setFlaggedItems([...mappedRides, ...mappedPapers, ...mappedBooks, ...mappedLocations]);
+      const mappedPapers = dataPapers.map(p => ({ 
+        ...p, 
+        entityType: 'Paper',
+        moderationReason: p.moderationReason || p.moderation_reason
+      }));
+      const mappedBooks = dataBooks.map(b => ({ 
+        ...b, 
+        entityType: 'Book',
+        moderationReason: b.moderationReason || b.moderation_reason
+      }));
+      const mappedLocations = dataLocations.map(l => ({ 
+        ...l, 
+        entityType: 'Location',
+        moderationReason: l.moderationReason || l.moderation_reason
+      }));
+      setFlaggedItems([...mappedPapers, ...mappedBooks, ...mappedLocations]);
     } catch (err) {
       console.error(err);
       setError("Moderation connectivity lost. Check backend.");
@@ -86,13 +97,12 @@ const AdminPanel = () => {
       const dataLocations = await resLocations.json();
       const dataNotes = await resNotes.json();
       
-      const mappedRides = dataRides.map(r => ({ ...r, entityType: 'Ride' }));
       const mappedPapers = dataPapers.map(p => ({ ...p, entityType: 'Paper' }));
       const mappedBooks = dataBooks.map(b => ({ ...b, entityType: 'Book' }));
       const mappedLocations = dataLocations.map(l => ({ ...l, entityType: 'Location' }));
       const mappedNotes = dataNotes.map(n => ({ ...n, entityType: 'Note' }));
       
-      setPendingItems([...mappedRides, ...mappedPapers, ...mappedBooks, ...mappedLocations, ...mappedNotes]);
+      setPendingItems([...mappedPapers, ...mappedBooks, ...mappedLocations, ...mappedNotes]);
     } catch (err) {
       setError("Failed to sync with approval queue.");
     }
@@ -198,8 +208,10 @@ const AdminPanel = () => {
       {error && <div className="admin-error-banner pulse">{error}</div>}
       
       <header className="admin-header">
-        <h2>Admin Dashboard</h2>
-        <p>Manage system integrity, user access, and content policy.</p>
+        <div>
+          <h2>Admin Dashboard</h2>
+          <p>Manage system integrity, user access, and content policy.</p>
+        </div>
         
         <div className="admin-tabs">
           <button 
@@ -281,19 +293,52 @@ const AdminPanel = () => {
                     <tr key={`${item.entityType}-${item.id}`}>
                       <td>{item.entityType} #{item.id}</td>
                       <td>
-                        {item.entityType === 'Ride' 
-                          ? `${item.origin} → ${item.destination}` 
-                          : item.entityType === 'Paper'
-                          ? `${item.courseName} (${item.courseCode})`
+                        {item.entityType === 'Paper'
+                          ? (
+                            <div className="paper-details">
+                              <strong>{item.courseName} ({item.courseCode})</strong>
+                              <br />
+                              <div className="paper-actions-row">
+                                <a href={item.googleDriveLink} target="_blank" rel="noopener noreferrer" className="admin-link">
+                                  View Link
+                                </a>
+                              </div>
+                              {(item.moderationReason || item.moderation_reason) && (
+                                <div className="admin-report-box">
+                                  <span className="report-tag-mini">REPORTED MESSAGE</span>
+                                  <p className="report-msg">{item.moderationReason || item.moderation_reason}</p>
+                                </div>
+                              )}
+                            </div>
+                          )
                           : item.entityType === 'Location'
                           ? `${item.locationName} (${item.category})`
                           : item.entityType === 'Note'
-                          ? `${item.title} (${item.courseCode})`
-                          : `${item.bookTitle} - ${item.listingType}`}
+                          ? (
+                            <div className="note-details">
+                              <strong>{item.title} ({item.courseCode})</strong>
+                              <br />
+                              <a href={`http://localhost:8080/api/notes/download/${item.fileUrl}`} target="_blank" rel="noopener noreferrer" className="admin-link">
+                                Download Note
+                              </a>
+                            </div>
+                          )
+                          : (
+                            <div className="book-details">
+                              <strong>{item.bookTitle}</strong>
+                              <br />
+                              <span className="text-muted">{item.author} - {item.listingType}</span>
+                              {item.frontCoverImage && (
+                                <div className="admin-img-preview">
+                                  <img src={item.frontCoverImage} alt="Cover" />
+                                </div>
+                              )}
+                            </div>
+                          )}
                       </td>
                       <td>
-                        {item.moderationReason ? (
-                          <span className="reason-tag">{item.moderationReason}</span>
+                        { (item.moderationReason || item.moderation_reason) ? (
+                          <span className="reason-tag">{item.moderationReason || item.moderation_reason}</span>
                         ) : (
                           <span className="text-muted">No flag note</span>
                         )}

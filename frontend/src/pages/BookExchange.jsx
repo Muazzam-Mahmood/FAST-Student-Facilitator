@@ -304,13 +304,13 @@ const BookExchange = ({ user }) => {
           </div>
           <form onSubmit={handlePostSubmit}>
             <div className="form-grid">
-              <input type="text" placeholder="Book Title" required 
+              <input type="text" placeholder="Book Title" required maxLength={100}
                 value={newBook.bookTitle} onChange={e => setNewBook({...newBook, bookTitle: e.target.value})} />
               
-              <input type="text" placeholder="Author" required 
+              <input type="text" placeholder="Author" required maxLength={50}
                 value={newBook.author} onChange={e => setNewBook({...newBook, author: e.target.value})} />
               
-              <input type="text" placeholder="Course Code (e.g., CS201)" required 
+              <input type="text" placeholder="Course Code (e.g., CS201)" required maxLength={10}
                 value={newBook.courseCode} onChange={e => setNewBook({...newBook, courseCode: e.target.value})} />
               
               <IosPickerField
@@ -323,7 +323,8 @@ const BookExchange = ({ user }) => {
               />
 
               {activeTab !== 'EXCHANGE' && (
-                <input type="number" placeholder="Price (Rs.)" required min="1"
+                <input type="number" placeholder="Price (Rs.)" required min="1" max="1000000"
+                  onInput={(e) => { if (e.target.value.length > 7) e.target.value = e.target.value.slice(0, 7) }}
                   value={newBook.price} onChange={e => setNewBook({...newBook, price: e.target.value})} />
               )}
 

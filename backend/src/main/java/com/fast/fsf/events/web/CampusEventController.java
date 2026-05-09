@@ -171,6 +171,13 @@ public class CampusEventController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
+    @DeleteMapping("/semester-plan")
+    public ResponseEntity<Void> deleteSemesterPlan() {
+        List<CampusEvent> planItems = eventRepository.findBySemesterPlanTrueAndOrganizerIn(CALENDAR_ORGANIZERS);
+        eventRepository.deleteAll(planItems);
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
         if (eventRepository.existsById(id)) {

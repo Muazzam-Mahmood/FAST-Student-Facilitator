@@ -32,7 +32,7 @@ const GOOGLE_DRIVE_LINKS = {
 };
 
 export default function PastPapers({ user }) {
-  const { showAlert } = useFsfDialog();
+  const { showAlert, showConfirm, showPrompt } = useFsfDialog();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [papers, setPapers] = useState([]);
@@ -138,7 +138,11 @@ export default function PastPapers({ user }) {
     const errors = {};
     if (!formData.courseName.trim()) errors.courseName = "Course name is required";
     if (!formData.courseCode.trim()) errors.courseCode = "Course code is required";
-    if (!formData.semesterYear.trim()) errors.semesterYear = "Semester/Year is required";
+    if (!formData.semesterYear.trim()) {
+      errors.semesterYear = "Semester/Year is required";
+    } else if (formData.semesterYear.length > 20) {
+      errors.semesterYear = "Semester/Year is too long (max 20 chars)";
+    }
     
     if (!formData.googleDriveLink.trim()) {
       errors.googleDriveLink = "Link is required";
@@ -304,6 +308,34 @@ export default function PastPapers({ user }) {
     })
     .catch(err => setReportError(err.message));
   };
+  
+  const deletePaper = async (paperId) => {
+    const reason = await showPrompt({
+      title: 'Delete Paper',
+      message: 'Enter reason for deletion (notified to uploader):',
+      placeholder: 'Reason (e.g. Broken link)',
+      required: true
+    });
+    if (!reason) return;
+
+    const confirmed = await showConfirm({
+      title: 'Confirm Deletion',
+      message: 'Are you sure you want to permanently delete this paper?',
+      danger: true
+    });
+    if (!confirmed) return;
+
+    fetch(`http://localhost:8080/api/past-papers/${paperId}?reason=${encodeURIComponent(reason)}`, {
+      method: 'DELETE'
+    })
+    .then(res => {
+      if (!res.ok) throw new Error("Delete failed");
+      setSelectedPaper(null);
+      setPapers(papers.filter(p => p.id !== paperId));
+      void showAlert({ title: 'Success', message: 'Paper deleted successfully.' });
+    })
+    .catch(err => void showAlert({ title: 'Error', message: err.message }));
+  };
 
   const filteredPapers = filterExam === 'ALL' 
     ? papers 
@@ -339,7 +371,7 @@ export default function PastPapers({ user }) {
 
           <div className="form-group">
             <input type="text" name="semesterYear" placeholder="Semester & Year (e.g. Fall 2023)" 
-              value={formData.semesterYear} onChange={handleInputChange} />
+              value={formData.semesterYear} onChange={handleInputChange} maxLength={20} />
             {formErrors.semesterYear && <span className="error-text">{formErrors.semesterYear}</span>}
           </div>
 
@@ -554,20 +586,32 @@ export default function PastPapers({ user }) {
               </div>
 
               <div className="report-action">
-                <button
-                  type="button"
-                  className="paper-detail-report-link"
-                  onClick={() => setShowReportForm(!showReportForm)}
-                >
-                  Report this paper
-                </button>
+                {user.role === 'ADMIN' ? (
+                  <button
+                    type="button"
+                    className="paper-detail-report-link delete-action-link"
+                    onClick={() => deletePaper(selectedPaper.id)}
+                  >
+                    Delete this paper
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="paper-detail-report-link"
+                    onClick={() => setShowReportForm(!showReportForm)}
+                  >
+                    Report this paper
+                  </button>
+                )}
                 {showReportForm && (
                   <div className="report-box">
                     <textarea
                       value={reportReason}
                       onChange={(e) => setReportReason(e.target.value)}
                       placeholder="Why are you reporting this? (e.g. Broken link, irrelevant file)"
+                      maxLength={150}
                     />
+                    <div className="char-counter">{reportReason.length}/150</div>
                     {reportError && <span className="error-text">{reportError}</span>}
                     <button type="button" className="btn-submit paper-detail-report-submit" onClick={reportPaper}>
                       Submit Report

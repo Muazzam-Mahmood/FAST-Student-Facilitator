@@ -279,32 +279,6 @@
     color: var(--text-primary);
 }
 
-.label-with-action {
-    display: flex;
-    align-items: center;
-}
-
-.set-now-btn {
-    margin-left: auto;
-    /* Pushes to far right without expanding hit box in the middle */
-    background: transparent;
-    border: none;
-    color: var(--accent-fill, #f44336);
-    font-size: 0.75rem;
-    cursor: pointer;
-    padding: 2px 6px;
-    border-radius: 4px;
-    transition: opacity 0.2s, background 0.2s;
-    font-weight: 600;
-    width: fit-content;
-    white-space: nowrap;
-}
-
-.set-now-btn:hover {
-    background: rgba(255, 59, 83, 0.1);
-    opacity: 0.8;
-}
-
 .req {
     color: #f44336;
 }

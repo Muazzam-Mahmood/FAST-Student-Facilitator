@@ -18,9 +18,7 @@ public class FlagPaperWorkflow extends AbstractPaperModerationWorkflow {
 
     @Override
     protected void validateTransition(PastPaper paper) {
-        if (paper.isFlagged()) {
-            throw new IllegalStateException("Paper is already flagged");
-        }
+        // Allow flagging even if already flagged to update report reasons
     }
 
     @Override
