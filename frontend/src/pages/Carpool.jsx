@@ -130,7 +130,7 @@ const Carpool = ({ user }) => {
 
   const loadRides = useCallback(async () => {
     const email = user?.email || '';
-    const res = await fetch(`http://localhost:8080/api/rides${email ? `?email=${email}` : ''}`);
+    const res = await fetch(`/api/rides${email ? `?email=${email}` : ''}`);
     const data = await res.json();
     setRides(Array.isArray(data) ? data : []);
   }, [user?.email]);
@@ -221,7 +221,7 @@ const Carpool = ({ user }) => {
     if (!confirmed) return;
 
     try {
-      await fetch(`http://localhost:8080/api/rides/${id}/flag`, { method: 'PUT' });
+      await fetch(`/api/rides/${id}/flag`, { method: 'PUT' });
       await showAlert({
         title: 'Report submitted',
         message:
@@ -244,7 +244,7 @@ const Carpool = ({ user }) => {
     if (!ok) return;
 
     try {
-      const res = await fetch(`http://localhost:8080/api/rides/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/rides/${id}`, { method: 'DELETE' });
       if (res.ok) {
         fetchRides();
       }
@@ -289,7 +289,7 @@ const Carpool = ({ user }) => {
     if (!ok) return;
 
     try {
-      const res = await fetch('http://localhost:8080/api/rides', {
+      const res = await fetch('/api/rides', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

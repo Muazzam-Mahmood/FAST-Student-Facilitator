@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useFsfDialog } from '../components/FsfDialogProvider';
 import './CampusMap.css';
 
-const API = 'http://localhost:8080/api/campus-map';
+const API = '/api/campus-map';
 
 const VALID_CATEGORIES = [
   'Academic Buildings',
@@ -1391,7 +1391,7 @@ const CampusMap = ({ user }) => {
             </div>
             <div className="whole-map-body">
               <img 
-                src="http://localhost:8080/api/campus-map/images/whole_campus_map.jpg" 
+                src="/api/campus-map/images/whole_campus_map.jpg" 
                 alt="Whole Campus Map" 
                 className="whole-map-img"
                 onError={(e) => {

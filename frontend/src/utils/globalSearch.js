@@ -1,5 +1,4 @@
-/** Backend base URL — matches other feature pages */
-const API = 'http://localhost:8080';
+import { API_BASE_URL as API } from './apiClient';
 
 async function fetchArray(url, signal) {
   try {

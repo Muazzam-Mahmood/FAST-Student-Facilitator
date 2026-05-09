@@ -77,7 +77,7 @@ const TimetableManager = ({ user }) => {
     setError(null);
     try {
       const res = await fetch(
-        `http://localhost:8080/api/timetable/section?department=${dept}&batch=${batch}&section=${section}`
+        `/api/timetable/section?department=${dept}&batch=${batch}&section=${section}`
       );
       if (!res.ok) throw new Error('Failed to fetch timetable');
       const data = await res.json();
@@ -104,10 +104,10 @@ const TimetableManager = ({ user }) => {
         form.append('file', selectedFile);
         form.append('ownerName', user.name);
         form.append('ownerEmail', user.email);
-        res = await fetch('http://localhost:8080/api/timetable/upload-file', { method: 'POST', body: form });
+        res = await fetch('/api/timetable/upload-file', { method: 'POST', body: form });
       } else {
         res = await fetch(
-          `http://localhost:8080/api/timetable/upload?url=${encodeURIComponent(uploadUrl)}&ownerName=${encodeURIComponent(user.name)}&ownerEmail=${encodeURIComponent(user.email)}`,
+          `/api/timetable/upload?url=${encodeURIComponent(uploadUrl)}&ownerName=${encodeURIComponent(user.name)}&ownerEmail=${encodeURIComponent(user.email)}`,
           { method: 'POST' }
         );
       }

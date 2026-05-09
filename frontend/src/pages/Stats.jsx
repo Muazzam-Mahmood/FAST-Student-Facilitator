@@ -22,10 +22,10 @@ const Stats = () => {
       // /api/admin/** is gated by Spring Security; /api/rides/pending is permitAll
       // and returns the same data we can count client-side.
       const [usersRes, activeRes, pendingRes, flaggedRes] = await Promise.all([
-        fsfFetch('http://localhost:8080/api/users/count'),
-        fsfFetch('http://localhost:8080/api/rides/count/active'),
-        fsfFetch('http://localhost:8080/api/rides/pending'),
-        fsfFetch('http://localhost:8080/api/rides/flagged/count')
+        fsfFetch('/api/users/count'),
+        fsfFetch('/api/rides/count/active'),
+        fsfFetch('/api/rides/pending'),
+        fsfFetch('/api/rides/flagged/count')
       ]);
 
       const pendingList = await pendingRes.json();

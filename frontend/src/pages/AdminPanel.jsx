@@ -47,10 +47,10 @@ const AdminPanel = () => {
   const fetchFlagged = async () => {
     try {
       const [resRides, resPapers, resBooks, resLocations] = await Promise.all([
-        fsfFetch('http://localhost:8080/api/rides/flagged'),
-        fsfFetch('http://localhost:8080/api/past-papers/flagged'),
-        fsfFetch('http://localhost:8080/api/books/flagged'),
-        fsfFetch('http://localhost:8080/api/campus-map/locations/flagged')
+        fsfFetch('/api/rides/flagged'),
+        fsfFetch('/api/past-papers/flagged'),
+        fsfFetch('/api/books/flagged'),
+        fsfFetch('/api/campus-map/locations/flagged')
       ]);
       if (!resRides.ok || !resPapers.ok || !resBooks.ok || !resLocations.ok) throw new Error("CORS or Server Error (Flagged)");
       const dataRides = await resRides.json();
@@ -84,11 +84,11 @@ const AdminPanel = () => {
   const fetchPending = async () => {
     try {
       const [resRides, resPapers, resBooks, resLocations, resNotes] = await Promise.all([
-        fsfFetch('http://localhost:8080/api/rides/pending'),
-        fsfFetch('http://localhost:8080/api/past-papers/pending'),
-        fsfFetch('http://localhost:8080/api/books/pending'),
-        fsfFetch('http://localhost:8080/api/campus-map/locations/pending'),
-        fsfFetch('http://localhost:8080/api/notes/pending')
+        fsfFetch('/api/rides/pending'),
+        fsfFetch('/api/past-papers/pending'),
+        fsfFetch('/api/books/pending'),
+        fsfFetch('/api/campus-map/locations/pending'),
+        fsfFetch('/api/notes/pending')
       ]);
       if (!resRides.ok || !resPapers.ok || !resBooks.ok || !resLocations.ok || !resNotes.ok) throw new Error("Server error (Pending)");
       const dataRides = await resRides.json();
@@ -110,7 +110,7 @@ const AdminPanel = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await fsfFetch('http://localhost:8080/api/users');
+      const res = await fsfFetch('/api/users');
       if (!res.ok) throw new Error("User data fetch failed");
       const data = await res.json();
       setUsers(data);
@@ -132,7 +132,7 @@ const AdminPanel = () => {
     const reason = reasonRaw ?? '';
     const endpoint = entityType === 'Ride' ? 'rides' : entityType === 'Paper' ? 'past-papers' : entityType === 'Location' ? 'campus-map/locations' : entityType === 'Note' ? 'notes' : 'books';
     try {
-      await fsfFetch(`http://localhost:8080/api/${endpoint}/${id}/approve?reason=${encodeURIComponent(reason || '')}`, { method: 'PUT' });
+      await fsfFetch(`/api/${endpoint}/${id}/approve?reason=${encodeURIComponent(reason || '')}`, { method: 'PUT' });
       refreshData();
     } catch (err) {
       console.error("Approve failed", err);
@@ -149,7 +149,7 @@ const AdminPanel = () => {
     if (!ok) return;
     const endpoint = entityType === 'Ride' ? 'rides' : entityType === 'Paper' ? 'past-papers' : entityType === 'Location' ? 'campus-map/locations' : entityType === 'Note' ? 'notes' : 'books';
     try {
-      const res = await fsfFetch(`http://localhost:8080/api/${endpoint}/${id}/resolve`, { method: 'PUT' });
+      const res = await fsfFetch(`/api/${endpoint}/${id}/resolve`, { method: 'PUT' });
       if (!res.ok) throw new Error(`Resolve failed with status ${res.status}`);
       refreshData();
     } catch (err) {
@@ -179,7 +179,7 @@ const AdminPanel = () => {
     });
     if (!proceed) return;
     try {
-      await fsfFetch(`http://localhost:8080/api/${endpoint}/${id}?reason=${encodeURIComponent(reason.trim())}`, { method: 'DELETE' });
+      await fsfFetch(`/api/${endpoint}/${id}?reason=${encodeURIComponent(reason.trim())}`, { method: 'DELETE' });
       refreshData();
     } catch (err) {
       console.error("Delete failed", err);
@@ -196,7 +196,7 @@ const AdminPanel = () => {
     });
     if (!ok) return;
     try {
-      await fsfFetch(`http://localhost:8080/api/users/${id}/ban`, { method: 'PUT' });
+      await fsfFetch(`/api/users/${id}/ban`, { method: 'PUT' });
       refreshData();
     } catch (err) {
       console.error("Ban toggle failed", err);
@@ -318,7 +318,7 @@ const AdminPanel = () => {
                             <div className="note-details">
                               <strong>{item.title} ({item.courseCode})</strong>
                               <br />
-                              <a href={`http://localhost:8080/api/notes/download/${item.fileUrl}`} target="_blank" rel="noopener noreferrer" className="admin-link">
+                              <a href={`/api/notes/download/${item.fileUrl}`} target="_blank" rel="noopener noreferrer" className="admin-link">
                                 Download Note
                               </a>
                             </div>

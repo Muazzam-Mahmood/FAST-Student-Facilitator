@@ -42,7 +42,7 @@ const CampusEventBoard = ({ user }) => {
     const loadEvents = async () => {
         setLoading(true);
         try {
-            const res = await fetch('http://localhost:8080/api/events');
+            const res = await fetch('/api/events');
             const data = await res.json();
             setEvents(data);
         } catch (err) {
@@ -54,7 +54,7 @@ const CampusEventBoard = ({ user }) => {
 
     const loadSemesterPlan = async () => {
         try {
-            const res = await fetch('http://localhost:8080/api/events/semester-plan');
+            const res = await fetch('/api/events/semester-plan');
             const data = await res.json();
             setSemesterPlan(data);
         } catch (err) {
@@ -160,8 +160,8 @@ const CampusEventBoard = ({ user }) => {
 
         const isEditing = editingId !== null;
         const url = isEditing
-            ? `http://localhost:8080/api/events/${editingId}?requesterEmail=${encodeURIComponent(user.email)}&requesterRole=${encodeURIComponent(user.role || '')}`
-            : 'http://localhost:8080/api/events';
+            ? `/api/events/${editingId}?requesterEmail=${encodeURIComponent(user.email)}&requesterRole=${encodeURIComponent(user.role || '')}`
+            : '/api/events';
         const method = isEditing ? 'PUT' : 'POST';
 
         try {
@@ -213,7 +213,7 @@ const CampusEventBoard = ({ user }) => {
         });
         if (!ok) return;
         try {
-            const res = await fetch(`http://localhost:8080/api/events/${event.id}`, { method: 'DELETE' });
+            const res = await fetch(`/api/events/${event.id}`, { method: 'DELETE' });
             if (res.ok) {
                 loadEvents();
                 loadSemesterPlan();
@@ -238,7 +238,7 @@ const CampusEventBoard = ({ user }) => {
         formDataUpload.append('ownerEmail', user.email);
 
         try {
-            const res = await fetch('http://localhost:8080/api/events/upload-plan', {
+            const res = await fetch('/api/events/upload-plan', {
                 method: 'POST',
                 body: formDataUpload,
             });
@@ -272,7 +272,7 @@ const CampusEventBoard = ({ user }) => {
         if (!ok) return;
 
         try {
-            const res = await fetch('http://localhost:8080/api/events/semester-plan', { method: 'DELETE' });
+            const res = await fetch('/api/events/semester-plan', { method: 'DELETE' });
             if (res.ok) {
                 await showAlert({ title: 'Plan Cleared', message: 'Imported semester plan items have been removed.' });
                 loadSemesterPlan();

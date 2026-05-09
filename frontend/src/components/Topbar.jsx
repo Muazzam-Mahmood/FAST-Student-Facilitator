@@ -76,7 +76,7 @@ const Topbar = ({ theme, toggleTheme, user }) => {
 
         const checkReminders = async () => {
             try {
-                const res = await fetch(`http://localhost:8080/api/reminders?email=${encodeURIComponent(user.email)}`);
+                const res = await fetch(`/api/reminders?email=${encodeURIComponent(user.email)}`);
                 const data = await res.json();
                 const pending = (data || []).some(r => (r.status || 'PENDING').toUpperCase() !== 'COMPLETED');
                 setHasActiveReminders(pending);

@@ -5,7 +5,7 @@ import { useFsfDialog } from '../components/FsfDialogProvider';
 import './LostAndFound.css';
 import '../styles/IosMenuPicker.css';
 
-const API_BASE_URL = 'http://localhost:8080/api/lost-found';
+const API_BASE_URL = '/api/lost-found';
 
 const LF_CATEGORIES = ['Electronics', 'Wallet/ID', 'Books', 'Keys', 'Clothing', 'Other'];
 

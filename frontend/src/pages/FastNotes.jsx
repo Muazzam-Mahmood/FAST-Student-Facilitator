@@ -5,7 +5,7 @@ import { useFsfDialog } from '../components/FsfDialogProvider';
 import './FastNotes.css';
 import { fsfFetch } from '../utils/apiClient';
 
-const API_BASE_URL = 'http://localhost:8080/api/notes';
+const API_BASE_URL = '/api/notes';
 
 function FastNotes({ user }) {
   const { showAlert } = useFsfDialog();

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import './Login.css';
+import { fsfFetch } from '../utils/apiClient';
 
 /**
  * Login Page — Google OAuth 2.0
@@ -18,9 +19,8 @@ const Login = ({ onLogin }) => {
   // ─── Send access_token + loginAs to our backend ──────────────────────────
   const handleToken = async (accessToken, loginAs) => {
     try {
-      const res = await fetch('http://localhost:8080/api/auth/google', {
+      const res = await fsfFetch('/api/auth/google', {
         method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ credential: accessToken, loginAs }),
       });
 

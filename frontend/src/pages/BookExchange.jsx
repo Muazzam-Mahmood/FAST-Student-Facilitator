@@ -32,9 +32,9 @@ const BookExchange = ({ user }) => {
 
   const fetchBooks = async () => {
     try {
-      let url = `http://localhost:8080/api/books?type=${activeTab === 'BUY' ? 'SELL' : activeTab}`;
+      let url = `/api/books?type=${activeTab === 'BUY' ? 'SELL' : activeTab}`;
       if (searchQuery) {
-        url = `http://localhost:8080/api/books/search?query=${encodeURIComponent(searchQuery)}&type=${activeTab === 'BUY' ? 'SELL' : activeTab}`;
+        url = `/api/books/search?query=${encodeURIComponent(searchQuery)}&type=${activeTab === 'BUY' ? 'SELL' : activeTab}`;
       }
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -68,7 +68,7 @@ const BookExchange = ({ user }) => {
     const id = parseInt(raw, 10);
     if (!Number.isFinite(id)) return;
 
-    fetch(`http://localhost:8080/api/books/${id}`)
+    fetch(`/api/books/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error('Listing not found');
         return res.json();
@@ -115,7 +115,7 @@ const BookExchange = ({ user }) => {
     if (!confirmed) return;
 
     try {
-      await fetch(`http://localhost:8080/api/books/${id}/flag`, { method: 'PUT' });
+      await fetch(`/api/books/${id}/flag`, { method: 'PUT' });
       await showAlert({
         title: 'Report submitted',
         message: 'This listing has been reported for review.',
@@ -181,8 +181,8 @@ const BookExchange = ({ user }) => {
       };
 
       const url = editBookId 
-        ? `http://localhost:8080/api/books/${editBookId}` 
-        : 'http://localhost:8080/api/books';
+        ? `/api/books/${editBookId}` 
+        : '/api/books';
       
       const method = editBookId ? 'PUT' : 'POST';
 
@@ -222,7 +222,7 @@ const BookExchange = ({ user }) => {
     });
     if (!ok) return;
     try {
-      await fetch(`http://localhost:8080/api/books/${id}/close`, { method: 'PUT' });
+      await fetch(`/api/books/${id}/close`, { method: 'PUT' });
       fetchBooks();
     } catch (err) {
       console.error("Failed to close listing:", err);
@@ -239,7 +239,7 @@ const BookExchange = ({ user }) => {
     });
     if (!ok) return;
     try {
-      await fetch(`http://localhost:8080/api/books/${id}?reason=User+deleted+own+listing`, { method: 'DELETE' });
+      await fetch(`/api/books/${id}?reason=User+deleted+own+listing`, { method: 'DELETE' });
       fetchBooks();
     } catch (err) {
       console.error("Failed to delete listing:", err);

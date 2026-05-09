@@ -31,7 +31,7 @@ const AdminReportChart = ({ stats }) => {
   React.useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await fsfFetch('http://localhost:8080/api/admin/analytics/feature-usage');
+        const res = await fsfFetch('/api/admin/analytics/feature-usage');
         const data = await res.json();
         
         // Map backend names to UI labels if needed

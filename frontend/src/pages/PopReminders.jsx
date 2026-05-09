@@ -12,7 +12,7 @@ import './PopReminders.css';
  * reminders are highlighted in red.
  */
 
-const API_BASE = 'http://localhost:8080/api/reminders';
+const API_BASE = '/api/reminders';
 
 const CATEGORIES = [
   { value: 'ASSIGNMENT', label: 'Assignment' },

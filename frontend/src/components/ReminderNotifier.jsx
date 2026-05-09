@@ -50,7 +50,7 @@ const ReminderNotifier = ({ user }) => {
         const tick = async () => {
             try {
                 const res = await fetch(
-                    `http://localhost:8080/api/reminders/pending?email=${encodeURIComponent(user.email)}`
+                    `/api/reminders/pending?email=${encodeURIComponent(user.email)}`
                 );
                 if (!res.ok) return;
                 const list = await res.json();

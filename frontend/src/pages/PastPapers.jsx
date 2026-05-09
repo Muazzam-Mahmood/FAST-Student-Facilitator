@@ -57,8 +57,8 @@ export default function PastPapers({ user }) {
 
   const fetchPapers = () => {
     const url = searchQuery.trim()
-      ? `http://localhost:8080/api/past-papers/search?query=${encodeURIComponent(searchQuery)}`
-      : `http://localhost:8080/api/past-papers`;
+      ? `/api/past-papers/search?query=${encodeURIComponent(searchQuery)}`
+      : `/api/past-papers`;
 
     fetch(url)
       .then((res) => res.json())
@@ -86,7 +86,7 @@ export default function PastPapers({ user }) {
     const id = parseInt(raw, 10);
     if (!Number.isFinite(id)) return;
 
-    fetch(`http://localhost:8080/api/past-papers/${id}`)
+    fetch(`/api/past-papers/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error('Paper not found');
         return res.json();
@@ -162,7 +162,7 @@ export default function PastPapers({ user }) {
       ownerName: user.name
     };
 
-    fetch('http://localhost:8080/api/past-papers', {
+    fetch('/api/past-papers', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -188,7 +188,7 @@ export default function PastPapers({ user }) {
   };
 
   const loadDetails = (paper) => {
-    fetch(`http://localhost:8080/api/past-papers/${paper.id}`)
+    fetch(`/api/past-papers/${paper.id}`)
       .then(res => {
         if (!res.ok) throw new Error("Paper not found");
         return res.json();
@@ -206,7 +206,7 @@ export default function PastPapers({ user }) {
   };
 
   const openDriveFolder = (paperId) => {
-    fetch(`http://localhost:8080/api/past-papers/${paperId}/download`)
+    fetch(`/api/past-papers/${paperId}/download`)
       .then(res => {
          if (!res.ok) throw new Error("Download tracking failed");
          return res.json();
@@ -221,7 +221,7 @@ export default function PastPapers({ user }) {
 
   const ratePaper = (rating) => {
     if (!selectedPaper) return;
-    fetch(`http://localhost:8080/api/past-papers/${selectedPaper.id}/rate`, {
+    fetch(`/api/past-papers/${selectedPaper.id}/rate`, {
       method: 'POST',
       headers:{ 'Content-Type': 'application/json' },
       body: JSON.stringify({ studentEmail: user.email, rating })
@@ -242,7 +242,7 @@ export default function PastPapers({ user }) {
       void showAlert({ title: 'Comment', message: 'Comment cannot be empty.' });
       return;
     }
-    fetch(`http://localhost:8080/api/past-papers/${selectedPaper.id}/comments`, {
+    fetch(`/api/past-papers/${selectedPaper.id}/comments`, {
       method: 'POST',
       headers:{ 'Content-Type': 'application/json' },
       body: JSON.stringify({ studentEmail: user.email, content: newComment })
@@ -268,7 +268,7 @@ export default function PastPapers({ user }) {
       });
       return;
     }
-    fetch(`http://localhost:8080/api/past-papers/comments/${commentId}?studentEmail=${encodeURIComponent(user.email)}`, {
+    fetch(`/api/past-papers/comments/${commentId}?studentEmail=${encodeURIComponent(user.email)}`, {
       method: 'DELETE'
     }).then(res => {
       if(!res.ok) {
@@ -284,7 +284,7 @@ export default function PastPapers({ user }) {
       setReportError("Reason cannot be empty");
       return;
     }
-    fetch(`http://localhost:8080/api/past-papers/${selectedPaper.id}/report`, {
+    fetch(`/api/past-papers/${selectedPaper.id}/report`, {
       method: 'POST',
       headers:{ 'Content-Type': 'application/json' },
       body: JSON.stringify({ reporterEmail: user.email, reason: reportReason })
@@ -325,7 +325,7 @@ export default function PastPapers({ user }) {
     });
     if (!confirmed) return;
 
-    fetch(`http://localhost:8080/api/past-papers/${paperId}?reason=${encodeURIComponent(reason)}`, {
+    fetch(`/api/past-papers/${paperId}?reason=${encodeURIComponent(reason)}`, {
       method: 'DELETE'
     })
     .then(res => {

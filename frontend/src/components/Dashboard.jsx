@@ -23,9 +23,9 @@ const Dashboard = ({ user }) => {
     const fetchData = async () => {
       try {
         const [ridesRes, papersRes, booksRes] = await Promise.all([
-          fetch('http://localhost:8080/api/rides/count/active'),
-          fetch('http://localhost:8080/api/past-papers/count/active'),
-          fetch('http://localhost:8080/api/books/count/active')
+          fetch('/api/rides/count/active'),
+          fetch('/api/past-papers/count/active'),
+          fetch('/api/books/count/active')
         ]);
         
         const rCount = await ridesRes.json();
@@ -39,13 +39,13 @@ const Dashboard = ({ user }) => {
 
         if (isAdmin) {
           const [userCountRes, flaggedRidesRes, flaggedPapersRes, flaggedBooksRes, pendingRidesRes, pendingPapersRes, pendingBooksRes] = await Promise.all([
-            fetch('http://localhost:8080/api/users/count'),
-            fetch('http://localhost:8080/api/rides/flagged/count'),
-            fetch('http://localhost:8080/api/past-papers/flagged/count'),
-            fetch('http://localhost:8080/api/books/flagged/count'),
-            fetch('http://localhost:8080/api/rides/pending'),
-            fetch('http://localhost:8080/api/past-papers/pending'),
-            fetch('http://localhost:8080/api/books/pending')
+            fetch('/api/users/count'),
+            fetch('/api/rides/flagged/count'),
+            fetch('/api/past-papers/flagged/count'),
+            fetch('/api/books/flagged/count'),
+            fetch('/api/rides/pending'),
+            fetch('/api/past-papers/pending'),
+            fetch('/api/books/pending')
           ]);
 
           setUserCount(await userCountRes.json());
