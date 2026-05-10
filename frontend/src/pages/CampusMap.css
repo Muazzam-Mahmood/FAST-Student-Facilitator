@@ -47,7 +47,7 @@
   gap: 10px;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  border-radius: 999px;
+  border-radius: 14px;
   padding: 10px 18px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -236,9 +236,9 @@
 }
 
 .map-select {
-  background: var(--canvas-bg);
+  background: rgba(0, 0, 0, 0.25);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-sm);
+  border-radius: 14px;
   color: var(--text-primary);
   padding: 10px 14px;
   font-family: var(--font-main);
@@ -251,6 +251,13 @@
   background-repeat: no-repeat;
   background-position: right 12px center;
   padding-right: 36px;
+}
+
+[data-theme="light"] .map-select {
+  background: rgba(255, 255, 255, 0.9);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232d3748' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
 }
 
 .map-select:focus {
@@ -959,15 +966,21 @@
 .suggest-input,
 .suggest-select,
 .suggest-textarea {
-  background: var(--canvas-bg);
+  background: rgba(0, 0, 0, 0.25);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-sm);
+  border-radius: 14px;
   color: var(--text-primary);
   padding: 10px 14px;
   font-family: var(--font-main);
   font-size: 0.9rem;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+[data-theme="light"] .suggest-input,
+[data-theme="light"] .suggest-select,
+[data-theme="light"] .suggest-textarea {
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .suggest-input:focus,
@@ -991,6 +1004,15 @@
   background-repeat: no-repeat;
   background-position: right 12px center;
   padding-right: 36px;
+}
+
+[data-theme="light"] .suggest-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232d3748' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+}
+
+/* iOS-style pickers full width inside field groups */
+.map-field-group .ios-category-dropdown {
+  width: 100%;
 }
 
 .field-error-text {

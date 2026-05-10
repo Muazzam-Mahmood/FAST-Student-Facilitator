@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useFsfDialog } from '../components/FsfDialogProvider';
+import IosPickerField from '../components/IosPickerField';
 import './CampusMap.css';
 
 const API = '/api/campus-map';
@@ -15,12 +16,12 @@ const VALID_CATEGORIES = [
 ];
 
 const CATEGORY_ICONS = {
-  'Academic Buildings':     '🏛️',
-  'Administrative Offices': '🏢',
-  'Facilities':             '🏫',
-  'Parking Areas':          '🅿️',
-  'Sports Areas':           '⚽',
-  'Faculty Offices':        '👨‍🏫',
+  'Academic Buildings':     '',
+  'Administrative Offices': '',
+  'Facilities':             '',
+  'Parking Areas':          '',
+  'Sports Areas':           '',
+  'Faculty Offices':        '',
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -60,7 +61,7 @@ function DestInfoCard({ location, onReport }) {
         onClick={() => onReport(location)}
         style={{ marginTop: '8px', alignSelf: 'flex-start' }}
       >
-        🚩 Report Info
+        Report Info
       </button>
     </div>
   );
@@ -74,7 +75,7 @@ function EventPopup({ events, onDismiss }) {
   return (
     <div className="event-popup" role="dialog" aria-label="Events at destination">
       <div className="event-popup-header">
-        <h5>🎉 Events happening here!</h5>
+        <h5>Events happening here!</h5>
         <button
           className="event-popup-close"
           onClick={onDismiss}
@@ -150,7 +151,7 @@ function LocationDetailPanel({ location, onClose, onGoHere, onReport }) {
             className="go-here-btn"
             onClick={() => onGoHere(location)}
           >
-            🧭 Get Directions Here
+            Get Directions Here
           </button>
 
           <button
@@ -158,7 +159,7 @@ function LocationDetailPanel({ location, onClose, onGoHere, onReport }) {
             onClick={() => onReport(location)}
             title="Report incorrect information"
           >
-            🚩 Report / Flag
+            Report / Flag
           </button>
         </div>
       </div>
@@ -699,7 +700,7 @@ const CampusMap = ({ user }) => {
 
       {/* ── Page Header ─────────────────────────────────────────────────── */}
       <header className="campus-map-header" ref={directionTopRef}>
-        <h1>🗺️ Campus Map Guide</h1>
+        <h1>Campus Map Guide</h1>
         <p>Find your way around FAST-NUCES Lahore campus — directions, locations, and more.</p>
       </header>
 
@@ -758,7 +759,7 @@ const CampusMap = ({ user }) => {
           className="whole-map-btn"
           onClick={() => setShowWholeMap(true)}
         >
-          🗺️ Whole Campus Map
+          Whole Campus Map
         </button>
       </div>
 
@@ -775,71 +776,58 @@ const CampusMap = ({ user }) => {
           <div className="direction-finder-grid">
             {/* Step 1 — What are you looking for? */}
             <div className="map-field-group">
-              <label className="map-field-label" htmlFor="search-type-select">
+              <label className="map-field-label">
                 What are you looking for?
               </label>
-              <select
+              <IosPickerField
                 id="search-type-select"
-                className="map-select"
                 value={searchType}
-                onChange={handleSearchTypeChange}
-              >
-                <option value="">Select type…</option>
-                <option value="BLOCK">Block</option>
-                <option value="FACULTY_OFFICE">Faculty Office</option>
-                <option value="ROOM">Room Number</option>
-              </select>
+                onChange={val => handleSearchTypeChange({ target: { value: val } })}
+                sheetTitle="What are you looking for?"
+                options={[
+                  { value: '', label: 'Select type…' },
+                  { value: 'BLOCK', label: 'Block' },
+                  { value: 'FACULTY_OFFICE', label: 'Faculty Office' },
+                  { value: 'ROOM', label: 'Room Number' },
+                ]}
+              />
             </div>
 
             {/* Step 2 — Where are you now? */}
             <div className="map-field-group">
-              <label className="map-field-label" htmlFor="from-location-select">
+              <label className="map-field-label">
                 Where are you now?
               </label>
-              <select
+              <IosPickerField
                 id="from-location-select"
-                className="map-select"
                 value={fromLocation}
-                onChange={handleFromChange}
-                disabled={!searchType}
-              >
-                <option value="">{searchType ? 'Choose your starting point…' : 'Select what you seek first'}</option>
-                {blockOptions.map((loc, i) => (
-                  <option key={i} value={loc.locationName}>{loc.locationName}</option>
-                ))}
-              </select>
+                onChange={val => handleFromChange({ target: { value: val } })}
+                sheetTitle="Where are you now?"
+                options={[
+                  { value: '', label: searchType ? 'Choose your starting point…' : 'Select what you seek first' },
+                  ...blockOptions.map(loc => ({ value: loc.locationName, label: loc.locationName })),
+                ]}
+              />
               {validationErrors.from && <span className="map-field-error">{validationErrors.from}</span>}
             </div>
 
             {/* Step 3 — Select Destination */}
             <div className="map-field-group">
-              <label className="map-field-label" htmlFor="to-location-select">
+              <label className="map-field-label">
                 Select Destination
               </label>
-              <select
+              <IosPickerField
                 id="to-location-select"
-                className="map-select"
                 value={toLocation}
-                onChange={handleToChange}
-                disabled={!fromLocation}
-              >
-                <option value="">
-                  {fromLocation ? 'Choose destination…' : 'Select starting point first'}
-                </option>
-                {searchType === 'BLOCK' && destinationOptions.map((loc, i) => (
-                  <option key={i} value={loc.locationName}>{loc.locationName}</option>
-                ))}
-                {searchType === 'FACULTY_OFFICE' && destinationOptions.map((opt, i) => (
-                  <option key={i} value={opt.name}>
-                    {opt.name} — {opt.block}
-                  </option>
-                ))}
-                {searchType === 'ROOM' && destinationOptions.map((opt, i) => (
-                  <option key={i} value={opt.name}>
-                    {opt.name} — {opt.block}
-                  </option>
-                ))}
-              </select>
+                onChange={val => handleToChange({ target: { value: val } })}
+                sheetTitle="Select Destination"
+                options={[
+                  { value: '', label: fromLocation ? 'Choose destination…' : 'Select starting point first' },
+                  ...(searchType === 'BLOCK' ? destinationOptions.map(loc => ({ value: loc.locationName, label: loc.locationName })) : []),
+                  ...(searchType === 'FACULTY_OFFICE' ? destinationOptions.map(opt => ({ value: opt.name, label: `${opt.name} — ${opt.block}` })) : []),
+                  ...(searchType === 'ROOM' ? destinationOptions.map(opt => ({ value: opt.name, label: `${opt.name} — ${opt.block}` })) : []),
+                ]}
+              />
               {validationErrors.to && <span className="map-field-error">{validationErrors.to}</span>}
             </div>
           </div>
@@ -852,19 +840,19 @@ const CampusMap = ({ user }) => {
               onClick={handleGetDirections}
               disabled={loading}
             >
-              {loading ? (
+              <>{loading ? (
                 <>
                   <span className="spinner-ring" style={{ width: 16, height: 16, borderWidth: 2 }} />
                   Finding route…
                 </>
               ) : (
-                <> 🧭 Get Directions </>
-              )}
+                <>Get Directions</>
+              )}</>
             </button>
 
             {/* Inline same-location hint */}
             {fromLocation && toLocation && fromLocation === toLocation && (
-              <span className="same-location-msg">⚠️ You are already at your destination!</span>
+              <span className="same-location-msg">You are already at your destination!</span>
             )}
           </div>
 
@@ -875,7 +863,7 @@ const CampusMap = ({ user }) => {
               {/* Same location */}
               {directionsResult.sameLocation && (
                 <div className="directions-info-banner success">
-                  <span className="directions-info-banner-icon">🎉</span>
+                  <span className="directions-info-banner-icon"></span>
                   <div className="directions-info-banner-text">
                     <h4>Already at destination!</h4>
                     <p>{directionsResult.message}</p>
@@ -886,7 +874,7 @@ const CampusMap = ({ user }) => {
               {/* Route not found */}
               {directionsResult.routeFound === false && !directionsResult.sameLocation && (
                 <div className="directions-info-banner">
-                  <span className="directions-info-banner-icon">📍</span>
+                  <span className="directions-info-banner-icon"></span>
                   <div className="directions-info-banner-text">
                     <h4>Directions Not Available</h4>
                     <p>{directionsResult.message}</p>
@@ -914,13 +902,13 @@ const CampusMap = ({ user }) => {
                       />
                       {/* Fallback shown on error (hidden by default) */}
                       <div className="step-placeholder" style={{ display: 'none' }}>
-                        <span className="step-placeholder-icon">🗺️</span>
+                        <span className="step-placeholder-icon">&#x1F4CD;</span>
                         <p>{currentStepData.stepDescription}</p>
                       </div>
                     </div>
                   ) : (
                     <div className="step-placeholder">
-                      <span className="step-placeholder-icon">🗺️</span>
+                      <span className="step-placeholder-icon">&#x1F4CD;</span>
                       <p>{currentStepData?.stepDescription}</p>
                     </div>
                   )}
@@ -950,7 +938,7 @@ const CampusMap = ({ user }) => {
                     </button>
 
                     {currentStep === totalSteps - 1 && (
-                      <span className="arrival-badge">You have arrived! 🎉</span>
+                      <span className="arrival-badge">You have arrived!</span>
                     )}
 
                     {/* Step dots */}
@@ -1127,18 +1115,20 @@ const CampusMap = ({ user }) => {
               {/* Category */}
               <div className="suggest-field">
                 <label htmlFor="suggest-category">Category</label>
-                <select
+                <IosPickerField
                   id="suggest-category"
-                  className={`suggest-select${suggestErrors.category ? ' error' : ''}`}
                   value={suggestData.category}
-                  onChange={e => {
-                    setSuggestData(d => ({ ...d, category: e.target.value }));
+                  onChange={val => {
+                    setSuggestData(d => ({ ...d, category: val }));
                     setSuggestErrors(err => ({ ...err, category: '' }));
                   }}
-                >
-                  <option value="">Select a category…</option>
-                  {VALID_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-                </select>
+                  sheetTitle="Select Category"
+                  options={[
+                    { value: '', label: 'Select a category…' },
+                    ...VALID_CATEGORIES.map(c => ({ value: c, label: c })),
+                  ]}
+                  className={suggestErrors.category ? 'error' : ''}
+                />
                 {suggestErrors.category && (
                   <span className="field-error-text">{suggestErrors.category}</span>
                 )}
@@ -1213,44 +1203,45 @@ const CampusMap = ({ user }) => {
               <div className="direction-finder-grid">
                 <div className="map-field-group">
                   <label className="map-field-label">From Location</label>
-                  <select
-                    className={`map-select${adminRouteErrors.fromLocation ? ' error' : ''}`}
+                  <IosPickerField
                     value={adminRouteForm.fromLocation}
-                    onChange={e => setAdminRouteForm(f => ({ ...f, fromLocation: e.target.value }))}
-                  >
-                    <option value="">Select From…</option>
-                    {blockOptions.map((loc, i) => (
-                      <option key={i} value={loc.locationName}>{loc.locationName}</option>
-                    ))}
-                  </select>
+                    onChange={val => setAdminRouteForm(f => ({ ...f, fromLocation: val }))}
+                    sheetTitle="From Location"
+                    options={[
+                      { value: '', label: 'Select From…' },
+                      ...blockOptions.map(loc => ({ value: loc.locationName, label: loc.locationName })),
+                    ]}
+                    className={adminRouteErrors.fromLocation ? 'error' : ''}
+                  />
                   {adminRouteErrors.fromLocation && <span className="field-error-text">{adminRouteErrors.fromLocation}</span>}
                 </div>
 
                 <div className="map-field-group">
                   <label className="map-field-label">Destination Category</label>
-                  <select
-                    className="map-select"
+                  <IosPickerField
                     value={adminToType}
-                    onChange={e => setAdminToType(e.target.value)}
-                  >
-                    <option value="BLOCK">Block / Building</option>
-                    <option value="ROOM">Classroom / Lab</option>
-                    <option value="FACULTY">Faculty Office</option>
-                  </select>
+                    onChange={val => setAdminToType(val)}
+                    sheetTitle="Destination Category"
+                    options={[
+                      { value: 'BLOCK', label: 'Block / Building' },
+                      { value: 'ROOM', label: 'Classroom / Lab' },
+                      { value: 'FACULTY', label: 'Faculty Office' },
+                    ]}
+                  />
                 </div>
 
                 <div className="map-field-group">
                   <label className="map-field-label">Target Block (Route Endpoint)</label>
-                  <select
-                    className={`map-select${adminRouteErrors.toLocation ? ' error' : ''}`}
+                  <IosPickerField
                     value={adminRouteForm.toLocation}
-                    onChange={e => setAdminRouteForm(f => ({ ...f, toLocation: e.target.value }))}
-                  >
-                    <option value="">Select Target Block…</option>
-                    {blockOptions.map((loc, i) => (
-                      <option key={i} value={loc.locationName}>{loc.locationName} ({loc.blockId})</option>
-                    ))}
-                  </select>
+                    onChange={val => setAdminRouteForm(f => ({ ...f, toLocation: val }))}
+                    sheetTitle="Target Block"
+                    options={[
+                      { value: '', label: 'Select Target Block…' },
+                      ...blockOptions.map(loc => ({ value: loc.locationName, label: `${loc.locationName} (${loc.blockId})` })),
+                    ]}
+                    className={adminRouteErrors.toLocation ? 'error' : ''}
+                  />
                   {adminRouteErrors.toLocation && <span className="field-error-text">{adminRouteErrors.toLocation}</span>}
                 </div>
 
@@ -1262,7 +1253,6 @@ const CampusMap = ({ user }) => {
                     className={`map-select${adminRouteErrors.stepOrder ? ' error' : ''}`}
                     value={adminRouteForm.stepOrder}
                     onChange={e => setAdminRouteForm(f => ({ ...f, stepOrder: e.target.value }))}
-                    style={{ backgroundColor: 'var(--bg-card-hover)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', padding: '0.65rem 1rem', borderRadius: '12px' }}
                   />
                   {adminRouteErrors.stepOrder && <span className="field-error-text">{adminRouteErrors.stepOrder}</span>}
                 </div>
@@ -1275,7 +1265,6 @@ const CampusMap = ({ user }) => {
                     accept="image/*"
                     onChange={e => setSelectedFile(e.target.files[0])}
                     className="map-select"
-                    style={{ backgroundColor: 'var(--bg-card-hover)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', padding: '0.65rem 1rem', borderRadius: '12px' }}
                   />
                 </div>
 
@@ -1287,7 +1276,6 @@ const CampusMap = ({ user }) => {
                     className="map-select"
                     value={newDescriptionInput}
                     onChange={e => setNewDescriptionInput(e.target.value)}
-                    style={{ backgroundColor: 'var(--bg-card-hover)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', padding: '0.65rem 1rem', borderRadius: '12px' }}
                   />
                 </div>
 
@@ -1299,7 +1287,6 @@ const CampusMap = ({ user }) => {
                     className="map-select"
                     value={newRoomInput}
                     onChange={e => setNewRoomInput(e.target.value)}
-                    style={{ backgroundColor: 'var(--bg-card-hover)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', padding: '0.65rem 1rem', borderRadius: '12px' }}
                   />
                 </div>
 
@@ -1311,7 +1298,6 @@ const CampusMap = ({ user }) => {
                     className="map-select"
                     value={newFacultyInput}
                     onChange={e => setNewFacultyInput(e.target.value)}
-                    style={{ backgroundColor: 'var(--bg-card-hover)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', padding: '0.65rem 1rem', borderRadius: '12px' }}
                   />
                 </div>
               </div>
