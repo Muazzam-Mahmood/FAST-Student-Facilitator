@@ -768,7 +768,6 @@ const CampusMap = ({ user }) => {
       ═══════════════════════════════════════════════════════════════════ */}
       <div className="map-section-card glass-card">
         <div className="map-section-header">
-          <span className="map-section-icon">🧭</span>
           <span className="map-section-title">Direction Finder</span>
         </div>
 
@@ -902,13 +901,13 @@ const CampusMap = ({ user }) => {
                       />
                       {/* Fallback shown on error (hidden by default) */}
                       <div className="step-placeholder" style={{ display: 'none' }}>
-                        <span className="step-placeholder-icon">&#x1F4CD;</span>
+                        <span className="step-placeholder-icon"></span>
                         <p>{currentStepData.stepDescription}</p>
                       </div>
                     </div>
                   ) : (
                     <div className="step-placeholder">
-                      <span className="step-placeholder-icon">&#x1F4CD;</span>
+                      <span className="step-placeholder-icon"></span>
                       <p>{currentStepData?.stepDescription}</p>
                     </div>
                   )}
@@ -976,7 +975,6 @@ const CampusMap = ({ user }) => {
       ═══════════════════════════════════════════════════════════════════ */}
       <div className="map-section-card glass-card" ref={categoryBrowserRef}>
         <div className="map-section-header">
-          <span className="map-section-icon">📂</span>
           <span className="map-section-title">Browse by Category</span>
         </div>
 
@@ -998,7 +996,7 @@ const CampusMap = ({ user }) => {
                   id={`accordion-${cat.replace(/\s+/g, '-').toLowerCase()}`}
                 >
                   <div className="accordion-header-left">
-                    <span className="accordion-cat-icon">{CATEGORY_ICONS[cat] || '📍'}</span>
+                    <span className="accordion-cat-icon">{CATEGORY_ICONS[cat] || ''}</span>
                     <span className="accordion-cat-name">{cat}</span>
                     <span className="accordion-count">{locsInCat.length}</span>
                   </div>
@@ -1053,14 +1051,13 @@ const CampusMap = ({ user }) => {
       ═══════════════════════════════════════════════════════════════════ */}
       <div className="map-section-card glass-card">
         <div className="map-section-header">
-          <span className="map-section-icon">💡</span>
           <span className="map-section-title">Suggest a Location</span>
         </div>
 
         <div className="map-section-body">
           {suggestSuccess && !showSuggestForm && (
             <div className="suggest-success">
-              ✅ Your suggestion has been submitted! The admin will review it.
+              Your suggestion has been submitted! The admin will review it.
             </div>
           )}
 
@@ -1187,14 +1184,12 @@ const CampusMap = ({ user }) => {
       {user?.role === 'ADMIN' && (
         <div className="map-section-card glass-card admin-routes-panel" style={{ border: '2px solid var(--glass-border-accent)' }}>
           <div className="map-section-header">
-            <span className="map-section-icon">⚙️</span>
             <span className="map-section-title">Manage Route Steps (Admin Only)</span>
           </div>
 
           <div className="map-section-body">
             {adminRouteSuccess && (
               <div className="directions-info-banner success" style={{ marginBottom: '1rem', padding: '0.75rem' }}>
-                <span className="directions-info-banner-icon">✅</span>
                 <div className="directions-info-banner-text">{adminRouteSuccess}</div>
               </div>
             )}
@@ -1259,12 +1254,15 @@ const CampusMap = ({ user }) => {
 
                 <div className="map-field-group">
                   <label className="map-field-label">Or Upload Photo</label>
+                  <label htmlFor="admin-route-file" className="map-file-upload-btn">
+                    {selectedFile ? selectedFile.name : 'Choose Photo...'}
+                  </label>
                   <input
                     id="admin-route-file"
                     type="file"
                     accept="image/*"
                     onChange={e => setSelectedFile(e.target.files[0])}
-                    className="map-select"
+                    className="map-file-input-hidden"
                   />
                 </div>
 

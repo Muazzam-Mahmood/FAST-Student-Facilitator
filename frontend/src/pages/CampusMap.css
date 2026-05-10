@@ -1206,3 +1206,52 @@
     border-radius: 0;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   FILE UPLOAD STYLING (Glassmorphic)
+   ══════════════════════════════════════════════════════════════════════════ */
+.map-file-input-hidden {
+  display: none;
+}
+
+.map-file-upload-btn {
+  display: block;
+  background: rgba(255, 59, 83, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 59, 83, 0.25);
+  border-radius: 14px;
+  color: #ff3b53; /* Vibrant Red */
+  padding: 12px 16px;
+  font-family: var(--font-main);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(255, 59, 83, 0.15);
+}
+
+.map-file-upload-btn:hover {
+  background: rgba(255, 59, 83, 0.2);
+  border-color: rgba(255, 59, 83, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 59, 83, 0.25);
+  color: #ff4d64;
+}
+
+[data-theme="light"] .map-file-upload-btn {
+  background: rgba(20, 58, 92, 0.08);
+  border-color: rgba(20, 58, 92, 0.2);
+  color: #143a5c; /* Deep Navy/Blue */
+  box-shadow: 0 4px 15px rgba(20, 58, 92, 0.1);
+}
+
+[data-theme="light"] .map-file-upload-btn:hover {
+  background: rgba(20, 58, 92, 0.15);
+  border-color: rgba(20, 58, 92, 0.35);
+  box-shadow: 0 6px 20px rgba(20, 58, 92, 0.18);
+}
