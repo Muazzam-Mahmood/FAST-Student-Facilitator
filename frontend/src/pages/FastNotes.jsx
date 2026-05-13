@@ -8,7 +8,7 @@ import { fsfFetch } from '../utils/apiClient';
 const API_BASE_URL = '/api/notes';
 
 function FastNotes({ user }) {
-  const { showAlert } = useFsfDialog();
+  const { showAlert, showConfirm } = useFsfDialog();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [notes, setNotes] = useState([]);
