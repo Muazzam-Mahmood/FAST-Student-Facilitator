@@ -39,12 +39,12 @@ function LostAndFound({ user }) {
 
   const fetchListings = async () => {
     try {
-      const url = new URL(API_BASE_URL);
-      url.searchParams.append('type', activeTab);
-      if (searchKeyword) url.searchParams.append('keyword', searchKeyword);
-      if (categoryFilter) url.searchParams.append('category', categoryFilter);
+      const params = new URLSearchParams();
+      params.append('type', activeTab);
+      if (searchKeyword) params.append('keyword', searchKeyword);
+      if (categoryFilter) params.append('category', categoryFilter);
 
-      const response = await fetch(url.toString());
+      const response = await fetch(`${API_BASE_URL}?${params.toString()}`);
       if (response.ok) {
         const data = await response.json();
         setListings(data);
@@ -161,11 +161,11 @@ function LostAndFound({ user }) {
         setFormData({ itemName: '', category: '', description: '', location: '', date: '' });
 
         // Re-fetch with current filters — use activeTab directly to avoid stale closure
-        const url = new URL(API_BASE_URL);
-        url.searchParams.append('type', activeTab);
-        if (searchKeyword) url.searchParams.append('keyword', searchKeyword);
-        if (categoryFilter) url.searchParams.append('category', categoryFilter);
-        const refreshRes = await fetch(url.toString());
+        const refreshParams = new URLSearchParams();
+        refreshParams.append('type', activeTab);
+        if (searchKeyword) refreshParams.append('keyword', searchKeyword);
+        if (categoryFilter) refreshParams.append('category', categoryFilter);
+        const refreshRes = await fetch(`${API_BASE_URL}?${refreshParams.toString()}`);
         if (refreshRes.ok) {
           setListings(await refreshRes.json());
         }

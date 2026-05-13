@@ -34,13 +34,13 @@ function FastNotes({ user }) {
 
   const fetchNotes = async () => {
     try {
-      const url = new URL(API_BASE_URL);
-      if (searchKeyword) url.searchParams.append('keyword', searchKeyword);
-      else if (courseCodeFilter) url.searchParams.append('keyword', courseCodeFilter);
-      if (subjectFilter) url.searchParams.append('subject', subjectFilter);
-      if (user?.email) url.searchParams.append('studentEmail', user.email);
+      const params = new URLSearchParams();
+      if (searchKeyword) params.append('keyword', searchKeyword);
+      else if (courseCodeFilter) params.append('keyword', courseCodeFilter);
+      if (subjectFilter) params.append('subject', subjectFilter);
+      if (user?.email) params.append('studentEmail', user.email);
 
-      const response = await fsfFetch(url.toString());
+      const response = await fsfFetch(`${API_BASE_URL}?${params.toString()}`);
       if (response.ok) {
         const data = await response.json();
         setNotes(data);
