@@ -18,7 +18,7 @@ function format12h(h24, m) {
 
 function parseDepartureTime(raw) {
   const s = String(raw ?? '').trim();
-  if (!s || s.includes('-')) return { ok: false };
+  if (!s) return { ok: false };
 
   const colon = s.match(/^(\d{1,2})\s*:\s*(\d{2})\s*(am|pm)?$/i);
   if (colon) {
@@ -42,7 +42,7 @@ function parseDepartureTime(raw) {
   }
 
   const digits = s.replace(/\D/g, '');
-  if (digits.length !== 4) return { ok: false };
+  if (digits.length !== 3 && digits.length !== 4) return { ok: false };
 
   const n = parseInt(digits, 10);
   const h = Math.floor(n / 100);
@@ -367,16 +367,16 @@ const Carpool = ({ user }) => {
               />
               <input
                 type="text"
-                placeholder="Time (e.g., 0830)"
+                placeholder="Time (e.g., 830 or 8:30)"
                 required
                 value={newRide.departureTime}
                 onChange={(e) => {
                   const val = e.target.value;
-                  if (val === '') { setNewRide({ ...newRide, departureTime: '' }); return; }
-                  if (/\D/.test(val)) return;
-                  if (val.length > 4) return;
-                  if (val.length >= 2 && parseInt(val.slice(0, 2), 10) > 23) return;
-                  if (val.length >= 4 && parseInt(val.slice(2, 4), 10) > 59) return;
+                  if (val.includes('-')) return;
+                  const digits = val.replace(/\D/g, '');
+                  if (digits.length > 4) return;
+                  if (digits.length >= 2 && parseInt(digits.slice(0, 2), 10) > 23) return;
+                  if (digits.length >= 4 && parseInt(digits.slice(2, 4), 10) > 59) return;
                   setNewRide({ ...newRide, departureTime: val });
                 }}
                 onBlur={normalizeDepartureTimeOnBlur}
