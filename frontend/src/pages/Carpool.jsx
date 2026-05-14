@@ -18,7 +18,7 @@ function format12h(h24, m) {
 
 function parseDepartureTime(raw) {
   const s = String(raw ?? '').trim();
-  if (!s) return { ok: false };
+  if (!s || s.includes('-')) return { ok: false };
 
   const colon = s.match(/^(\d{1,2})\s*:\s*(\d{2})\s*(am|pm)?$/i);
   if (colon) {
@@ -42,7 +42,7 @@ function parseDepartureTime(raw) {
   }
 
   const digits = s.replace(/\D/g, '');
-  if (digits.length !== 3 && digits.length !== 4) return { ok: false };
+  if (digits.length !== 4) return { ok: false };
 
   const n = parseInt(digits, 10);
   const h = Math.floor(n / 100);
@@ -366,8 +366,8 @@ const Carpool = ({ user }) => {
                 onChange={(e) => setNewRide({ ...newRide, destination: e.target.value })}
               />
               <input
-                type="time"
-                placeholder="Time (e.g., 830 or 8:30)"
+                type="text"
+                placeholder="Time (e.g., 0830 or 8:30)"
                 required
                 value={newRide.departureTime}
                 onChange={(e) => setNewRide({ ...newRide, departureTime: e.target.value })}
