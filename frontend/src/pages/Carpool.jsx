@@ -367,16 +367,16 @@ const Carpool = ({ user }) => {
               />
               <input
                 type="text"
-                placeholder="Time (e.g., 0830 or 8:30)"
+                placeholder="Time (e.g., 0830)"
                 required
                 value={newRide.departureTime}
                 onChange={(e) => {
                   const val = e.target.value;
-                  if (val.includes('-')) return;
-                  const digits = val.replace(/\D/g, '');
-                  if (!val.includes(':') && digits.length >= 2 && parseInt(digits.slice(0, 2), 10) > 23) return;
-                  if (digits.length >= 4 && parseInt(digits.slice(0, 2), 10) > 23) return;
-                  if (digits.length >= 4 && parseInt(digits.slice(2, 4), 10) > 59) return;
+                  if (val === '') { setNewRide({ ...newRide, departureTime: '' }); return; }
+                  if (/\D/.test(val)) return;
+                  if (val.length > 4) return;
+                  if (val.length >= 2 && parseInt(val.slice(0, 2), 10) > 23) return;
+                  if (val.length >= 4 && parseInt(val.slice(2, 4), 10) > 59) return;
                   setNewRide({ ...newRide, departureTime: val });
                 }}
                 onBlur={normalizeDepartureTimeOnBlur}
