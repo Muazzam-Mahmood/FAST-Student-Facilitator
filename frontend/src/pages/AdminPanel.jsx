@@ -97,13 +97,12 @@ const AdminPanel = () => {
       const dataLocations = await resLocations.json();
       const dataNotes = await resNotes.json();
       
-      const mappedRides = dataRides.map(r => ({ ...r, entityType: 'Ride' }));
       const mappedPapers = dataPapers.map(p => ({ ...p, entityType: 'Paper' }));
       const mappedBooks = dataBooks.map(b => ({ ...b, entityType: 'Book' }));
       const mappedLocations = dataLocations.map(l => ({ ...l, entityType: 'Location' }));
       const mappedNotes = dataNotes.map(n => ({ ...n, entityType: 'Note' }));
       
-      setPendingItems([...mappedRides, ...mappedPapers, ...mappedBooks, ...mappedLocations, ...mappedNotes]);
+      setPendingItems([...mappedPapers, ...mappedBooks, ...mappedLocations, ...mappedNotes]);
     } catch (err) {
       setError("Failed to sync with approval queue.");
     }
@@ -324,8 +323,6 @@ const AdminPanel = () => {
                               </a>
                             </div>
                           )
-                          : item.entityType === 'Ride'
-                          ? `${item.origin} → ${item.destination} | ${item.departureTime} | Driver: ${item.driverName}`
                           : (
                             <div className="book-details">
                               <strong>{item.bookTitle}</strong>
