@@ -264,7 +264,7 @@ const Carpool = ({ user }) => {
     const timeParsed = parseDepartureTime(newRide.departureTime);
     if (!timeParsed.ok) {
       setValidationError(
-        'Enter a valid departure time (e.g. 830 → 8:30 AM, 8:30, 14:45, or 2:30 pm).'
+        'Enter a valid departure time (e.g. 0830 → 8:30 AM,  14:45 → 2:30 pm).'
       );
       return;
     }
@@ -367,7 +367,7 @@ const Carpool = ({ user }) => {
               />
               <input
                 type="text"
-                placeholder="Time (e.g., 830 or 8:30)"
+                placeholder="Time (e.g. 0830)"
                 required
                 value={newRide.departureTime}
                 onChange={(e) => {
@@ -427,7 +427,7 @@ const Carpool = ({ user }) => {
               />
             </div>
             <p id="cp-time-hint" className="cp-field-hint">
-              Leaving the time field formats compact numbers (e.g. 830 → 8:30 AM). You can also use 24h (14:30).
+              Leaving the time field formats compact numbers (e.g. 0830 → 8:30 AM). You can also use 24h (14:30 → 2:30 PM).
             </p>
 
             <div className="checkpoint-section">
