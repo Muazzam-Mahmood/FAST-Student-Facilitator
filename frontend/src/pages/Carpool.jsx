@@ -370,7 +370,14 @@ const Carpool = ({ user }) => {
                 placeholder="Time (e.g., 0830 or 8:30)"
                 required
                 value={newRide.departureTime}
-                onChange={(e) => setNewRide({ ...newRide, departureTime: e.target.value })}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val.includes('-')) return;
+                  const digits = val.replace(/\D/g, '');
+                  if (digits.length >= 4 && parseInt(digits.slice(0, 2), 10) > 23) return;
+                  if (digits.length >= 4 && parseInt(digits.slice(2, 4), 10) > 59) return;
+                  setNewRide({ ...newRide, departureTime: val });
+                }}
                 onBlur={normalizeDepartureTimeOnBlur}
                 aria-describedby="cp-time-hint"
               />
