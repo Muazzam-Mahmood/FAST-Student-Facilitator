@@ -366,7 +366,7 @@ const Carpool = ({ user }) => {
                 onChange={(e) => setNewRide({ ...newRide, destination: e.target.value })}
               />
               <input
-                type="text"
+                type="time"
                 placeholder="Time (e.g., 830 or 8:30)"
                 required
                 value={newRide.departureTime}
