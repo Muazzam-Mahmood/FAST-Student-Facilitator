@@ -374,6 +374,7 @@ const Carpool = ({ user }) => {
                   const val = e.target.value;
                   if (val.includes('-')) return;
                   const digits = val.replace(/\D/g, '');
+                  if (!val.includes(':') && digits.length >= 2 && parseInt(digits.slice(0, 2), 10) > 23) return;
                   if (digits.length >= 4 && parseInt(digits.slice(0, 2), 10) > 23) return;
                   if (digits.length >= 4 && parseInt(digits.slice(2, 4), 10) > 59) return;
                   setNewRide({ ...newRide, departureTime: val });
