@@ -291,9 +291,11 @@ const BookExchange = ({ user }) => {
           />
           <button type="submit" className="secondary-btn">Search</button>
         </form>
-        <button className="primary-btn" onClick={() => { setIsPosting(true); setEditBookId(null); setNewBook({ bookTitle: '', author: '', courseCode: '', bookCondition: 'Good', price: '', frontCoverImage: '', backCoverImage: '', listingType: 'SELL' }); }}>
-          Post {activeTab === 'SELL' ? 'a Book to Sell' : activeTab === 'BUY' ? 'a Buy Request' : 'an Exchange'}
-        </button>
+        {activeTab !== 'BUY' && (
+          <button className="primary-btn" onClick={() => { setIsPosting(true); setEditBookId(null); setNewBook({ bookTitle: '', author: '', courseCode: '', bookCondition: 'Good', price: '', frontCoverImage: '', backCoverImage: '', listingType: 'SELL' }); }}>
+            Post {activeTab === 'SELL' ? 'a Book to Sell' : 'an Exchange'}
+          </button>
+        )}
       </div>
 
       {isPosting && (
