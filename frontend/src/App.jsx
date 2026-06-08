@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import IconRail from './components/IconRail';
 import Topbar from './components/Topbar';
+import MobileBottomNav from './components/MobileBottomNav';
 import Dashboard from './components/Dashboard';
 import Login from './pages/Login';
 import Carpool from './pages/Carpool';
@@ -104,6 +105,7 @@ function App() {
                       </Routes>
                     </div>
                   </main>
+                  <MobileBottomNav />
                 </div>
               </>
             </ProtectedRoute>

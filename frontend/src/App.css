@@ -105,3 +105,17 @@
   border-radius: 12px;
   transition: outline-color 0.3s ease;
 }
+
+@media (max-width: 768px) {
+  .app-canvas {
+    margin: 0;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+
+  .content-area {
+    padding: var(--spacing-md);
+    padding-bottom: 80px; /* Space for MobileBottomNav */
+  }
+}
