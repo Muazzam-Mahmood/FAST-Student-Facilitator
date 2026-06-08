@@ -444,9 +444,11 @@ const BookExchange = ({ user }) => {
                           🛒 BUY
                         </button>
                       ) : (
-                        book.ownerEmail === user?.email ? (
+                        (book.ownerEmail === user?.email || user?.role === 'ADMIN') ? (
                           <>
-                            <button className="close-btn" style={{marginRight: '0.5rem', color: 'var(--text-secondary)', borderColor: 'var(--text-secondary)'}} onClick={() => handleEdit(book)}>✏️ Edit</button>
+                            {book.ownerEmail === user?.email && (
+                              <button className="close-btn" style={{marginRight: '0.5rem', color: 'var(--text-secondary)', borderColor: 'var(--text-secondary)'}} onClick={() => handleEdit(book)}>✏️ Edit</button>
+                            )}
                             <button className="report-btn" style={{marginRight: '0.5rem'}} onClick={() => handleDelete(book.id)}>🗑️ Delete</button>
                             {book.status === 'ACTIVE' && (
                               <button className="close-btn" onClick={() => handleClose(book.id)}>Mark Closed</button>

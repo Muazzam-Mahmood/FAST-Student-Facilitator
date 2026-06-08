@@ -229,9 +229,22 @@ function FastNotes({ user }) {
       const res = await fsfFetch(`${API_BASE_URL}/${id}`, { method: 'DELETE' });
       if (res.ok) {
         fetchNotes();
+        await showAlert({
+          title: 'Note deleted',
+          message: 'The note has been successfully removed.',
+        });
+      } else {
+        await showAlert({
+          title: 'Delete failed',
+          message: `Could not delete the note (status ${res.status}). Please try again.`,
+        });
       }
     } catch (err) {
       console.error(err);
+      await showAlert({
+        title: 'Network error',
+        message: 'Could not reach the server. Please check your connection.',
+      });
     }
   };
 

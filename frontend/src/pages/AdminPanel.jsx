@@ -57,6 +57,11 @@ const AdminPanel = () => {
       const dataPapers = await resPapers.json();
       const dataBooks = await resBooks.json();
       const dataLocations = await resLocations.json();
+      const mappedRides = dataRides.map(r => ({
+        ...r,
+        entityType: 'Ride',
+        moderationReason: r.moderationReason || r.moderation_reason
+      }));
       const mappedPapers = dataPapers.map(p => ({ 
         ...p, 
         entityType: 'Paper',
@@ -72,7 +77,7 @@ const AdminPanel = () => {
         entityType: 'Location',
         moderationReason: l.moderationReason || l.moderation_reason
       }));
-      setFlaggedItems([...mappedPapers, ...mappedBooks, ...mappedLocations]);
+      setFlaggedItems([...mappedRides, ...mappedPapers, ...mappedBooks, ...mappedLocations]);
     } catch (err) {
       console.error(err);
       setError("Moderation connectivity lost. Check backend.");
@@ -97,12 +102,13 @@ const AdminPanel = () => {
       const dataLocations = await resLocations.json();
       const dataNotes = await resNotes.json();
       
+      const mappedRides = dataRides.map(r => ({ ...r, entityType: 'Ride' }));
       const mappedPapers = dataPapers.map(p => ({ ...p, entityType: 'Paper' }));
       const mappedBooks = dataBooks.map(b => ({ ...b, entityType: 'Book' }));
       const mappedLocations = dataLocations.map(l => ({ ...l, entityType: 'Location' }));
       const mappedNotes = dataNotes.map(n => ({ ...n, entityType: 'Note' }));
       
-      setPendingItems([...mappedPapers, ...mappedBooks, ...mappedLocations, ...mappedNotes]);
+      setPendingItems([...mappedRides, ...mappedPapers, ...mappedBooks, ...mappedLocations, ...mappedNotes]);
     } catch (err) {
       setError("Failed to sync with approval queue.");
     }
@@ -293,7 +299,22 @@ const AdminPanel = () => {
                     <tr key={`${item.entityType}-${item.id}`}>
                       <td>{item.entityType} #{item.id}</td>
                       <td>
-                        {item.entityType === 'Paper'
+                        {item.entityType === 'Ride'
+                          ? (
+                            <div className="ride-details">
+                              <strong>{item.origin} → {item.destination}</strong>
+                              <br />
+                              <span className="text-muted">Driver: {item.driverName} | {item.availableSeats} seat{item.availableSeats !== 1 ? 's' : ''} | {item.departureTime}</span>
+                              {item.vehicleType && <span className="text-muted"> | {item.vehicleType}</span>}
+                              {(item.moderationReason || item.moderation_reason) && (
+                                <div className="admin-report-box">
+                                  <span className="report-tag-mini">REPORTED MESSAGE</span>
+                                  <p className="report-msg">{item.moderationReason || item.moderation_reason}</p>
+                                </div>
+                              )}
+                            </div>
+                          )
+                          : item.entityType === 'Paper'
                           ? (
                             <div className="paper-details">
                               <strong>{item.courseName} ({item.courseCode})</strong>
