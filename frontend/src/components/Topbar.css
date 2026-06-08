@@ -368,3 +368,26 @@
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+
+/* --- Mobile Optimizations --- */
+@media (max-width: 768px) {
+    .topbar {
+        overflow-x: auto;
+        white-space: nowrap;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+        padding: 12px 16px;
+    }
+    
+    .topbar::-webkit-scrollbar {
+        display: none; /* Chrome, Safari and Opera */
+    }
+
+    .search-container {
+        flex: 0 0 200px; /* Prevent search bar from squishing too much */
+    }
+
+    .user-pill, .user-info, .user-name {
+        white-space: nowrap; /* Ensure name doesn't wrap or get cut off vertically */
+    }
+}
