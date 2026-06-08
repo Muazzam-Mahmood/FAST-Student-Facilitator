@@ -1273,7 +1273,7 @@
     font-size: 14px;
   }
 
-  .get-directions-row {
+  .direction-finder-grid {
     flex-direction: column;
     align-items: stretch;
   }
