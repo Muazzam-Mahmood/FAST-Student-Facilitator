@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Car, Map, BookOpen, FileText, Settings, CalendarDays, ArchiveBox, MessageCircle } from 'lucide-react';
+import { Home, Car, Map, BookOpen, FileText, Settings, CalendarDays, Archive, MessageCircle } from 'lucide-react';
 import './MobileBottomNav.css';
 
 const MobileBottomNav = () => {
@@ -11,7 +11,7 @@ const MobileBottomNav = () => {
     { name: 'Timetable', path: '/timetable', icon: CalendarDays },
     { name: 'Books', path: '/marketplace', icon: BookOpen },
     { name: 'Notes', path: '/notes', icon: FileText },
-    { name: 'Papers', path: '/past-papers', icon: ArchiveBox }, // Using ArchiveBox as placeholder for past papers
+    { name: 'Papers', path: '/past-papers', icon: Archive }, // Using Archive as placeholder for past papers
     { name: 'Lost/Found', path: '/lost-found', icon: MessageCircle },
     { name: 'Admin', path: '/admin', icon: Settings },
   ];
