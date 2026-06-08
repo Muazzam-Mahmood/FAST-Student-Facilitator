@@ -311,6 +311,7 @@
 
   .fn-controls .fn-picker {
     width: 100%;
+    min-width: 0 !important;
   }
 
   .fn-controls .fn-picker button.ios-category-dropdown-trigger {
