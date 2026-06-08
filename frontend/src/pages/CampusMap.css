@@ -1287,3 +1287,12 @@
     justify-content: center;
   }
 }
+
+.map-search-wrapper {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.whole-map-trigger-container {
+  margin-bottom: 24px;
+}
