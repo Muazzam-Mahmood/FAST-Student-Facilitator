@@ -137,10 +137,10 @@
   --card-shadow: 0 4px 20px var(--light-elev);
   --card-shadow-hover: 0 12px 32px var(--light-elev), 0 4px 12px var(--light-elev);
 
-  /* Classical navy (same family as welcome banner); solid for type / hairlines */
-  --accent-gradient: linear-gradient(115deg, #0b2238 0%, #0f2d4a 42%, #143a5c 100%);
-  --accent-gradient-hover: linear-gradient(115deg, #0e2d48 0%, #123856 42%, #17466a 100%);
-  --accent-teal: #143a5c;
+  /* Vibrant blue modern gradient for light mode */
+  --accent-gradient: linear-gradient(115deg, #0ea5e9 0%, #2563eb 100%);
+  --accent-gradient-hover: linear-gradient(115deg, #0284c7 0%, #1d4ed8 100%);
+  --accent-teal: #2563eb;
   --accent-fill: var(--accent-gradient);
   --accent-fill-hover: var(--accent-gradient-hover);
   /* Match elevation shadows (pills, dots, focus halos) */

@@ -237,3 +237,25 @@
   font-weight: 700;
   color: var(--accent-teal);
 }
+
+/* --- Mobile Optimizations --- */
+@media (max-width: 768px) {
+  .welcome-banner.glass-card {
+    padding: 24px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .welcome-banner.glass-card h1 {
+    font-size: 24px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr; /* Stack the three stat cards on mobile */
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+}

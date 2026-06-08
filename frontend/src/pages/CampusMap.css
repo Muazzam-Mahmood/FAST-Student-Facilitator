@@ -1255,3 +1255,35 @@
   border-color: rgba(20, 58, 92, 0.35);
   box-shadow: 0 6px 20px rgba(20, 58, 92, 0.18);
 }
+
+/* --- Additional Mobile Optimizations --- */
+@media (max-width: 768px) {
+  .campus-map-page {
+    padding: 1rem;
+    gap: 16px;
+  }
+
+  .map-search-bar input {
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  .map-select {
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  .get-directions-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .get-directions-btn,
+  .whole-map-btn,
+  .suggest-submit-btn,
+  .map-file-upload-btn {
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
+  }
+}
