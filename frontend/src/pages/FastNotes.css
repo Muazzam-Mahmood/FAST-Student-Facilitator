@@ -305,8 +305,8 @@
   .fn-controls .search-input {
     grid-column: span 2;
     width: 100%;
-    min-height: 44px;
-    font-size: 16px;
+    min-height: 36px;
+    font-size: 14px;
   }
 
   .fn-controls .fn-picker {
@@ -315,14 +315,14 @@
 
   .fn-controls .fn-picker button.ios-category-dropdown-trigger {
     width: 100%;
-    min-height: 44px;
-    font-size: 14px;
+    min-height: 36px;
+    font-size: 13px;
   }
 
   .fn-controls .fn-toolbar-primary {
     grid-column: span 2;
     width: 100%;
-    min-height: 44px;
+    min-height: 36px;
   }
 
   .note-card {
@@ -351,8 +351,8 @@
   }
 
   .vote-btn {
-    min-height: 44px;
-    min-width: 44px;
+    min-height: 36px;
+    min-width: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -360,7 +360,7 @@
 
   .download-btn,
   .action-buttons button {
-    min-height: 44px;
+    min-height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -386,6 +386,6 @@
   .fn-modal-actions button {
     width: 100%;
     margin-bottom: 8px;
-    min-height: 44px;
+    min-height: 38px;
   }
 }

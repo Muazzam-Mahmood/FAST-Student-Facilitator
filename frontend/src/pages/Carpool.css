@@ -519,7 +519,7 @@ input[type=number] {
 
   .carpool-actions button {
     width: 100%;
-    min-height: 44px; /* Apple HIG standard touch target */
+    min-height: 38px;
   }
 
   .form-btns {
@@ -529,15 +529,15 @@ input[type=number] {
 
   .form-btns button {
     width: 100%;
-    min-height: 44px;
+    min-height: 38px;
     margin-bottom: 8px;
   }
 
   .form-grid input,
   .form-select,
   .cp-input input {
-    min-height: 44px; /* Ensure inputs are easy to tap */
-    font-size: 16px; /* Prevent iPhone auto-zoom on focus */
+    min-height: 38px;
+    font-size: 14px;
   }
 
   .cp-tag-remove {

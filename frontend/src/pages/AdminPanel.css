@@ -412,6 +412,6 @@
 
   .action-btns button {
     width: 100%;
-    min-height: 44px; /* Better touch target for approval/rejection */
+    min-height: 38px;
   }
 }

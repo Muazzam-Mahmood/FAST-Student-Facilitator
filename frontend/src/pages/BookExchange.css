@@ -479,8 +479,8 @@
   }
 
   .search-form input {
-    min-height: 44px;
-    font-size: 16px;
+    min-height: 38px;
+    font-size: 14px;
   }
 
   .form-grid {
@@ -489,8 +489,8 @@
 
   .form-grid input,
   .form-grid select {
-    min-height: 44px;
-    font-size: 16px;
+    min-height: 38px;
+    font-size: 14px;
   }
 
   .be-form-btns {
@@ -500,7 +500,7 @@
 
   .be-form-btns button {
     width: 100%;
-    min-height: 44px;
+    min-height: 38px;
     margin-bottom: 8px;
   }
 
@@ -509,6 +509,6 @@
   }
 
   .actions button {
-    min-height: 44px; /* Touch target */
+    min-height: 38px;
   }
 }

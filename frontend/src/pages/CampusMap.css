@@ -1264,13 +1264,13 @@
   }
 
   .map-search-bar input {
-    min-height: 44px;
-    font-size: 16px;
+    min-height: 38px;
+    font-size: 14px;
   }
 
   .map-select {
-    min-height: 44px;
-    font-size: 16px;
+    min-height: 38px;
+    font-size: 14px;
   }
 
   .get-directions-row {
@@ -1283,7 +1283,7 @@
   .suggest-submit-btn,
   .map-file-upload-btn {
     width: 100%;
-    min-height: 44px;
+    min-height: 38px;
     justify-content: center;
   }
 }
