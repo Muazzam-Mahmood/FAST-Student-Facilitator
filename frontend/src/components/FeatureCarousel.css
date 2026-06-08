@@ -84,7 +84,6 @@
 /* Fixed on .carousel-view: stays put while cards slide underneath; hidden at end of track */
 .carousel-scroll-arrow {
   position: absolute;
-  right: 8px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 8;
@@ -104,6 +103,14 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.25);
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
   animation: carousel-arrow-pulse 2.2s ease-in-out infinite;
+}
+
+.carousel-scroll-arrow.right {
+  right: 8px;
+}
+
+.carousel-scroll-arrow.left {
+  left: 8px;
 }
 
 .carousel-scroll-arrow:hover {
