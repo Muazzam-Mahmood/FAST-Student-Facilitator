@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import IconRail from './components/IconRail';
 import Topbar from './components/Topbar';
 import MobileBottomNav from './components/MobileBottomNav';
@@ -26,6 +26,29 @@ import './App.css';
  * 
  * We now use 'react-router-dom' to handle navigation between features.
  */
+
+function RouteTitleUpdater() {
+  const location = useLocation();
+  React.useEffect(() => {
+    const routeTitles = {
+      '/': 'Dashboard | FAST Student Facilitator',
+      '/carpool': 'Carpool | FAST Student Facilitator',
+      '/admin': 'Admin Panel | FAST Student Facilitator',
+      '/stats': 'Stats | FAST Student Facilitator',
+      '/lost-found': 'Lost & Found | FAST Student Facilitator',
+      '/past-papers': 'Past Papers | FAST Student Facilitator',
+      '/events': 'Campus Events | FAST Student Facilitator',
+      '/reminders': 'Reminders | FAST Student Facilitator',
+      '/campus-map': 'Campus Map | FAST Student Facilitator',
+      '/timetable': 'Timetable | FAST Student Facilitator',
+      '/marketplace': 'Book Exchange | FAST Student Facilitator',
+      '/notes': 'Fast Notes | FAST Student Facilitator'
+    };
+    document.title = routeTitles[location.pathname] || 'FAST Student Facilitator | FAST-NUCES Portal';
+  }, [location]);
+  return null;
+}
+
 function App() {
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem('fsf-user');
@@ -68,6 +91,7 @@ function App() {
 
   return (
     <Router>
+      <RouteTitleUpdater />
       <div className="app-shell">
         <Routes>
           {/* Login Page: Outside of the main shell */}
