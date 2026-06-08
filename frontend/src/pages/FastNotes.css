@@ -296,18 +296,31 @@
 /* --- Mobile Optimizations --- */
 @media (max-width: 768px) {
   .fn-controls {
-    flex-direction: column;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 12px;
   }
 
-  .fn-controls .search-input,
-  .fn-controls .fn-picker {
+  .fn-controls .search-input {
+    grid-column: span 2;
     width: 100%;
     min-height: 44px;
     font-size: 16px;
   }
 
+  .fn-controls .fn-picker {
+    width: 100%;
+  }
+
+  .fn-controls .fn-picker button.ios-category-dropdown-trigger {
+    width: 100%;
+    min-height: 44px;
+    font-size: 14px;
+  }
+
   .fn-controls .fn-toolbar-primary {
+    grid-column: span 2;
     width: 100%;
     min-height: 44px;
   }
