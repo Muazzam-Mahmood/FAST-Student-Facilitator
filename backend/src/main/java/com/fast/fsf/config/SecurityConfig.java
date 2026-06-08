@@ -39,6 +39,7 @@ public class SecurityConfig {
             // Define which pages are public and which are private
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/actuator/**").permitAll() // Allow UptimeRobot to ping health endpoint
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/rides/**").permitAll() // Students can view/post rides
