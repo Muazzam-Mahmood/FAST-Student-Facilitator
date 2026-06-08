@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://YOUR-RENDER-APP.onrender.com/api/$1" },
+    { "source": "/api/(.*)", "destination": "https://fast-student-facilitator.onrender.com/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
