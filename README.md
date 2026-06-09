@@ -175,8 +175,14 @@ This project was developed as part of the **Software Design & Architecture** cou
 
 ---
 
-## Team
+## Developers
 
-Developed by Team 2 — FAST-NUCES Lahore, Spring 2026.
+- Muhammad Muazzam Mahmood
+- Muhammad Huzaifa
+- Muhammad Sheharyar Waheed
+- Muhammad Anas
+- Arqam Hafeez
+
+FAST-NUCES Lahore — Spring 2026
 
 Repository: https://github.com/Muazzam-Mahmood/FAST-Student-Facilitator
