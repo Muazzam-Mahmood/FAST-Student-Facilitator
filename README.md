@@ -177,7 +177,7 @@ This project was developed as part of the **Software Design & Architecture** cou
 
 ## Developers
 
-- Muhammad Muazzam Mahmood
+- [Muhammad Muazzam Mahmood](https://github.com/Muazzam-Mahmood)
 - Muhammad Huzaifa
 - Muhammad Sheharyar Waheed
 - Muhammad Anas
