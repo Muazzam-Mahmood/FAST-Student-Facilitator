@@ -1,64 +1,101 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGoogleLogin } from '@react-oauth/google';
+// [ORIGINAL IMPORT - KEPT FOR TESTING & PRODUCTION RESTORE]
+// import { useGoogleLogin } from '@react-oauth/google';
 import './Login.css';
 import { fsfFetch } from '../utils/apiClient';
 
 /**
- * Login Page — Google OAuth 2.0
+ * Login Page — Google OAuth 2.0 (With Testing Bypass)
  *
+ * In production:
  * Uses useGoogleLogin (implicit flow) which opens a real Google popup.
  * Access token is sent to the backend which verifies it with Google and
  * handles domain + role enforcement.
+ *
+ * In testing bypass mode:
+ * Direct 1-click login allows instant entry into Student Portal or Portal Admin.
+ * Google OAuth code is preserved in comments for seamless switching.
  */
 const Login = ({ onLogin }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(null); // 'student' | 'admin' | null
   const [popup,   setPopup]   = useState(null); // { type, message }
 
-  // ─── Send access_token + loginAs to our backend ──────────────────────────
-  const handleToken = async (accessToken, loginAs) => {
-    try {
-      const res = await fsfFetch('/api/auth/google', {
-        method:  'POST',
-        body:    JSON.stringify({ credential: accessToken, loginAs }),
+  /* =========================================================================
+   * [ORIGINAL GOOGLE OAUTH CODE - KEPT FOR TESTING & PRODUCTION RESTORE]
+   *
+   * const handleToken = async (accessToken, loginAs) => {
+   *   try {
+   *     const res = await fsfFetch('/api/auth/google', {
+   *       method:  'POST',
+   *       body:    JSON.stringify({ credential: accessToken, loginAs }),
+   *     });
+   *
+   *     const data = await res.json();
+   *
+   *     if (res.ok) {
+   *       onLogin(data);
+   *       navigate('/');
+   *     } else if (data.error === 'NOT_NUCES') {
+   *       setPopup({ type: 'nuces',  message: data.message });
+   *     } else if (data.error === 'NOT_ADMIN') {
+   *       setPopup({ type: 'admin',  message: data.message });
+   *     } else if (data.error === 'BANNED') {
+   *       setPopup({ type: 'banned', message: data.message });
+   *     } else {
+   *       setPopup({ type: 'error',  message: data.message || 'Authentication failed.' });
+   *     }
+   *   } catch {
+   *     setPopup({ type: 'error', message: 'Cannot reach server. Is the backend running on port 8080?' });
+   *   } finally {
+   *     setLoading(null);
+   *   }
+   * };
+   *
+   * const loginAsStudent = useGoogleLogin({
+   *   onSuccess: (resp) => handleToken(resp.access_token, 'STUDENT'),
+   *   onError:   () => { setLoading(null); setPopup({ type: 'error', message: 'Google sign-in failed.' }); },
+   *   onNonOAuthError: () => { setLoading(null); },
+   *   flow: 'implicit',
+   * });
+   *
+   * const loginAsAdmin = useGoogleLogin({
+   *   onSuccess: (resp) => handleToken(resp.access_token, 'ADMIN'),
+   *   onError:   () => { setLoading(null); setPopup({ type: 'error', message: 'Google sign-in failed.' }); },
+   *   onNonOAuthError: () => { setLoading(null); },
+   *   flow: 'implicit',
+   * });
+   * ========================================================================= */
+
+  // ─── TESTING MODE: Direct Bypass Logins ──────────────────────────────────
+  const handleBypassStudentLogin = () => {
+    setLoading('student');
+    setTimeout(() => {
+      onLogin({
+        id: 1,
+        name: 'FAST Student',
+        email: 'student@nu.edu.pk',
+        role: 'STUDENT',
+        picture: ''
       });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        onLogin(data);
-        navigate('/');
-      } else if (data.error === 'NOT_NUCES') {
-        setPopup({ type: 'nuces',  message: data.message });
-      } else if (data.error === 'NOT_ADMIN') {
-        setPopup({ type: 'admin',  message: data.message });
-      } else if (data.error === 'BANNED') {
-        setPopup({ type: 'banned', message: data.message });
-      } else {
-        setPopup({ type: 'error',  message: data.message || 'Authentication failed.' });
-      }
-    } catch {
-      setPopup({ type: 'error', message: 'Cannot reach server. Is the backend running on port 8080?' });
-    } finally {
-      setLoading(null);
-    }
+      navigate('/');
+    }, 120);
   };
 
-  // ─── Google OAuth hooks ────────────────────────────────────────────────
-  const loginAsStudent = useGoogleLogin({
-    onSuccess: (resp) => handleToken(resp.access_token, 'STUDENT'),
-    onError:   () => { setLoading(null); setPopup({ type: 'error', message: 'Google sign-in failed.' }); },
-    onNonOAuthError: () => { setLoading(null); },
-    flow: 'implicit',
-  });
-
-  const loginAsAdmin = useGoogleLogin({
-    onSuccess: (resp) => handleToken(resp.access_token, 'ADMIN'),
-    onError:   () => { setLoading(null); setPopup({ type: 'error', message: 'Google sign-in failed.' }); },
-    onNonOAuthError: () => { setLoading(null); },
-    flow: 'implicit',
-  });
+  const handleBypassAdminLogin = () => {
+    setLoading('admin');
+    setTimeout(() => {
+      onLogin({
+        id: 99,
+        name: 'Portal Admin',
+        email: 'l240363@lhr.nu.edu.pk',
+        role: 'ADMIN',
+        picture: ''
+      });
+      navigate('/');
+    }, 120);
+  };
 
   // ─── Popup config ──────────────────────────────────────────────────────
   const POPUP_META = {
@@ -110,6 +147,7 @@ const Login = ({ onLogin }) => {
             Sign in with your <strong>.nu.edu.pk</strong> Google account
           </p>
 
+          {/* [ORIGINAL GOOGLE OAUTH BUTTON - KEPT FOR TESTING & PRODUCTION]
           <button
             id="btn-student-login"
             className="google-btn login-btn"
@@ -118,6 +156,18 @@ const Login = ({ onLogin }) => {
           >
             {loading === 'student' ? <span className="btn-spinner" /> : <GoogleIcon />}
             {loading === 'student' ? 'Signing in…' : 'Continue as Student'}
+          </button>
+          */}
+
+          {/* TESTING BYPASS: Direct 1-click entry into Student Portal */}
+          <button
+            id="btn-student-login"
+            className="google-btn login-btn"
+            onClick={handleBypassStudentLogin}
+            disabled={loading !== null}
+          >
+            {loading === 'student' ? <span className="btn-spinner" /> : <GoogleIcon />}
+            {loading === 'student' ? 'Entering Portal…' : 'Continue as Student'}
           </button>
         </div>
 
@@ -129,10 +179,23 @@ const Login = ({ onLogin }) => {
           <p className="login-section-label admin-label">Portal Admin</p>
           <p className="login-hint">Restricted to registered FSF developers</p>
 
+          {/* [ORIGINAL GOOGLE OAUTH BUTTON - KEPT FOR TESTING & PRODUCTION]
           <button
             id="btn-admin-login"
             className="google-btn google-btn--admin login-btn"
             onClick={() => { setLoading('admin'); loginAsAdmin(); }}
+            disabled={loading !== null}
+          >
+            {loading === 'admin' ? <span className="btn-spinner" /> : <GoogleIcon />}
+            {loading === 'admin' ? 'Verifying…' : 'Sign in as Portal Admin'}
+          </button>
+          */}
+
+          {/* TESTING BYPASS: Direct 1-click entry as Portal Admin */}
+          <button
+            id="btn-admin-login"
+            className="google-btn google-btn--admin login-btn"
+            onClick={handleBypassAdminLogin}
             disabled={loading !== null}
           >
             {loading === 'admin' ? <span className="btn-spinner" /> : <GoogleIcon />}
